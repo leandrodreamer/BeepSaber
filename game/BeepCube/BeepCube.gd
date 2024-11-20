@@ -24,15 +24,18 @@ class CutPiece extends RigidBody3D:
 	var coll := CollisionShape3D.new()
 	var lifetime: float = 0.0
 	
-	func _init() -> void:
+	func _init(mesh_in: Mesh, mat_in: ShaderMaterial) -> void:
 		add_to_group(&"cutted_cube")
+		mat_in.set_shader_parameter(&"cutted", true)
 		collision_layer = 0
 		collision_mask = CollisionLayerConstants.Floor_mask
 		gravity_scale = 1
 		# set a phyiscs material for some more bouncy behaviour
 		physics_material_override = cube_phys_mat
 		
+		mesh.mesh = mesh_in
 		mesh.layers = 3 # visible to both spectator and player
+		mesh.material_override = mat_in
 		
 		var shape := BoxShape3D.new()
 		shape.size = Vector3(0.25, 0.25, 0.125)
@@ -41,13 +44,26 @@ class CutPiece extends RigidBody3D:
 		add_child(coll)
 		add_child(mesh)
 	
+	func setup_cut(dist_from_center, angle) -> void:
+		lifetime = 0.0
+		angular_velocity = Vector3()
+		linear_velocity = Vector3()
+		mesh.material_override.set_shader_parameter(&"cut_dist_from_center", dist_from_center)
+		mesh.material_override.set_shader_parameter(&"cut_angle", angle)
+	
+	func set_color(new_color: Color) -> void:
+		mesh.material_override.set_shader_parameter(&"color", new_color)
+		
+	func set_chain_head(is_chain_head: bool) -> void:
+		mesh.material_override.set_shader_parameter(&"is_chain_head", is_chain_head)
+	
 	func _physics_process(delta: float) -> void:
 		lifetime += delta
 		if lifetime > 0.3:
-			queue_free()
+			get_parent().remove_child(self)
 		else:
 			var f := lifetime*(1.0/0.3)
-			(mesh.material_override as ShaderMaterial).set_shader_parameter(&"cut_vanish",ease(f,2)*0.5)
+			mesh.material_override.set_shader_parameter(&"cut_vanish",ease(f,2)*0.5)
 
 
 # we store the mesh here as part of the BeepCube for easier access because we will
@@ -56,11 +72,18 @@ var _mesh: Mesh
 var _mat: ShaderMaterial
 @export var min_speed := 0.5
 
+var piece_left : CutPiece = null
+var piece_right : CutPiece = null
+
 func _ready() -> void:
 	var mi := $BeepCubeMesh as MeshInstance3D
 	_mat = mi.material_override as ShaderMaterial
 	_mesh = mi.mesh
-
+	
+	# init our cut pieces with unique copies of our own material for reference
+	piece_left = CutPiece.new(_mesh, _mat.duplicate(true) as ShaderMaterial)
+	piece_right = CutPiece.new(_mesh, _mat.duplicate(true) as ShaderMaterial)
+	
 func spawn(note_info: ColorNoteInfo, current_beat: float, color: Color) -> void:
 	speed = Constants.BEAT_DISTANCE * Map.current_info.beats_per_minute * 0.016666666666666667
 	beat = note_info.beat
@@ -78,11 +101,15 @@ func spawn(note_info: ColorNoteInfo, current_beat: float, color: Color) -> void:
 	
 	rotation.z = Constants.CUBE_ROTATIONS[note_info.cut_direction] + deg_to_rad(note_info.angle_offset)
 	
+	piece_left.set_color(color)
+	piece_right.set_color(color)
 	_mat.set_shader_parameter(&"color", color)
 	_mat.set_shader_parameter(&"is_dot", is_dot)
 	# since cube instances get recycled, we gotta reset cubes that were chain
 	# heads in a past life
 	_mat.set_shader_parameter(&"is_chain_head", false)
+	piece_left.set_chain_head(false)
+	piece_right.set_chain_head(false)
 	
 	# separate cube collision layers to allow a diferent collider on right/wrong cuts.
 	# opposing collision layers (ie. right note & left saber) will be placed on the
@@ -113,6 +140,8 @@ func release() -> void:
 
 func make_chain_head() -> void:
 	_mat.set_shader_parameter(&"is_chain_head", true)
+	piece_left.set_chain_head(true)
+	piece_right.set_chain_head(true)
 
 func on_miss() -> void:
 	Scoreboard.reset_combo()
@@ -130,7 +159,8 @@ func cut(saber_type: int, cut_speed: Vector3, cut_plane: Plane, controller: Beep
 	var base_cut_angle_accuracy := global_transform.basis.y.dot(cut_direction_xy)
 	var cut_distance := cut_plane.distance_to(global_transform.origin)
 	
-	_create_cut_rigid_body(cut_plane)
+	if Settings.cube_cuts_falloff:
+		_create_cut_rigid_body(cut_plane)
 	
 	if saber_type == which_saber:
 		var cut_angle_accuracy := clampf((base_cut_angle_accuracy-0.7)/0.3, 0.0, 1.0)
@@ -155,32 +185,16 @@ func cut(saber_type: int, cut_speed: Vector3, cut_plane: Plane, controller: Beep
 # cut the cube by creating two rigid bodies and using a CSGBox to create
 # the cut plane
 func _create_cut_rigid_body(cutplane: Plane) -> void:
-	var piece_left := CutPiece.new()
-	var piece_right := CutPiece.new()
 	piece_left.global_transform = global_transform
 	piece_right.global_transform = global_transform
 	
-	# the original cube mesh
-	piece_left.mesh.mesh = _mesh
-	piece_right.mesh.mesh = _mesh
-	
-	var left_mat := _mat.duplicate(true) as ShaderMaterial
-	var right_mat := _mat.duplicate(true) as ShaderMaterial
-	left_mat.set_shader_parameter(&"cutted", true)
-	right_mat.set_shader_parameter(&"cutted", true)
-	
 	# calculate angle and position of the cut
 	var cut_angle_abs := Vector2(cutplane.normal.x, cutplane.normal.y).angle()
-	# multiply by 1.25 to make up for the mesh being at 0.8 scale
-	var cut_dist_from_center := cutplane.distance_to(global_transform.origin)# * 1.25
+	var cut_dist_from_center := cutplane.distance_to(global_transform.origin)
 	var cut_angle_rel := cut_angle_abs - global_rotation.z
 	
-	left_mat.set_shader_parameter(&"cut_dist_from_center", -cut_dist_from_center)
-	right_mat.set_shader_parameter(&"cut_dist_from_center", cut_dist_from_center)
-	left_mat.set_shader_parameter(&"cut_angle", cut_angle_rel + PI)
-	right_mat.set_shader_parameter(&"cut_angle", cut_angle_rel)
-	piece_left.mesh.material_override = left_mat
-	piece_right.mesh.material_override = right_mat
+	piece_left.setup_cut(-cut_dist_from_center, cut_angle_rel + PI)
+	piece_right.setup_cut(cut_dist_from_center, cut_angle_rel)
 	
 	# transform the normal into the orientation of the actual cube mesh
 	var normal := piece_left.mesh.transform.basis.inverse() * cutplane.normal

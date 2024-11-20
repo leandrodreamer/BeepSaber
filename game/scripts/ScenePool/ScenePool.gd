@@ -25,7 +25,7 @@ func _ready() -> void:
 	print("cubes in pool: ",_free_list.size())
 
 func acquire() -> BeepCube:
-	var cube := _free_list.pop_back() as BeepCube
+	var cube := _free_list.pop_front() as BeepCube
 	if not cube:
 		var new_cube := scene.instantiate() as BeepCube
 		new_cube.scene_released.connect(_on_scene_released)
@@ -34,5 +34,4 @@ func acquire() -> BeepCube:
 	return cube
 
 func _on_scene_released(cube: BeepCube) -> void:
-	cube.scene_released.disconnect(_on_scene_released)
 	_free_list.push_back(cube)
