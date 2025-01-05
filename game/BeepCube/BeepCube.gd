@@ -206,10 +206,9 @@ func _create_cut_rigid_body(cutplane: Plane) -> void:
 	piece_right.coll.look_at_from_position(-cutplane.normal*0.125, cutplane.normal, Vector3(0,1,0))
 	
 	# some impulse so the cube half moves
-	var cutplane_2d := Vector3(cutplane.x * 2.0,cutplane.y * 2.0,0.0)
-	var splitplane_2d := cutplane_2d.cross(piece_left.transform.basis.z)
-	piece_left.apply_central_impulse(-splitplane_2d)
-	piece_right.apply_central_impulse(splitplane_2d)
+	var split_vector := cutplane.normal * 2.0
+	piece_left.apply_central_impulse(-split_vector)
+	piece_right.apply_central_impulse(split_vector)
 	
 	get_parent().add_child(piece_left)
 	get_parent().add_child(piece_right)
