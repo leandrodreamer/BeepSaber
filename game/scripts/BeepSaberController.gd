@@ -53,24 +53,23 @@ func _update_movement_aabb() -> void:
 func reset_movement_aabb() -> void:
 	movement_aabb = AABB(global_transform.origin, Vector3.ZERO)
 
-var _rumble_intensity := 0.0
-var _rumble_duration := -128.0 #-1 means deactivated so applications can also set their own rumble
+var _is_simple_rumbling := false
+var _rumble_duration_remaining := 0.0
 
 func simple_rumble(intensity: float, duration: float) -> void:
-	_rumble_intensity = intensity;
-	_rumble_duration = duration;
+	_rumble_duration_remaining = duration;
+	_is_simple_rumbling = true
 	trigger_haptic_pulse("haptic", 20, intensity, duration, 0)
 	
 func is_simple_rumbling() -> bool:
-	return _rumble_duration > 0.0
+	return _is_simple_rumbling
 	
 func _update_rumble(dt: float) -> void:
-	if _rumble_duration < -100: return
-	simple_rumble(_rumble_intensity, _rumble_duration)
-	_rumble_duration -= dt
-	if _rumble_duration <= 0.0:
-		_rumble_duration = -128.0
-		simple_rumble(0.0, _rumble_duration)
+	if _rumble_duration_remaining > 0.0:
+		_rumble_duration_remaining -= dt
+	if _rumble_duration_remaining <= 0.0:
+		_rumble_duration_remaining = 0.0
+		_is_simple_rumbling = false
 
 var first_time := true
 
