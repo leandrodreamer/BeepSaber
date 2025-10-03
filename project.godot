@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="Open Saber"
+config/version="0.6.0"
 run/main_scene="res://game/BeepSaber_Game.tscn"
-config/features=PackedStringArray("4.3")
+config/features=PackedStringArray("4.4")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="res://game/data/beepsaber_logo.png"
 config/icon="res://icon.png"
@@ -142,10 +143,10 @@ common/physics_fps=72
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
-shading/overrides/force_vertex_shading.mobile=false
 shading/overrides/force_lambert_over_burley=true
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 environment/defaults/default_environment="res://default_env.tres"
+shading/overrides/force_vertex_shading.mobile=false
 quality/intended_usage/framebuffer_allocation=3
 vram_compression/import_etc=true
 lights_and_shadows/shadow_atlas/size=2048

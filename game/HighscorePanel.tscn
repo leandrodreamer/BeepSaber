@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cpwxp083qm1jq"]
 
 [ext_resource type="Theme" uid="uid://dvcjel72een6o" path="res://OQ_Toolkit/OQ_UI2D/theme/oq_ui2d_standard.theme" id="1"]
-[ext_resource type="Script" path="res://game/HighscorePanel.gd" id="2"]
+[ext_resource type="Script" uid="uid://r8b4cf5qx2ch" path="res://game/HighscorePanel.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://j1wa4gcqkltx" path="res://game/data/maps/Songs/TheFatRat_Timelapse/cover.jpg" id="4"]
 
 [sub_resource type="StyleBoxFlat" id="1"]

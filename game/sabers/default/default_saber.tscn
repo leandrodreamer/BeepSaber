@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://chqutrqmle57g" path="res://game/LightSaber.material" id="1"]
 [ext_resource type="AudioStream" uid="uid://bkuquwclng0k" path="res://game/data/lightsaber.ogg" id="2"]
-[ext_resource type="Script" path="res://game/sabers/default/default_saber.gd" id="3"]
+[ext_resource type="Script" uid="uid://dpijlxn571mlf" path="res://game/sabers/default/default_saber.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://drc5tdiltfqnk" path="res://game/BeepCube/BeepCubeEmission.png" id="3_b1nd4"]
 [ext_resource type="AudioStream" uid="uid://db2atyh66c0qv" path="res://game/data/beepcube_cut.ogg" id="4"]
 [ext_resource type="PackedScene" uid="uid://buhdimf18mwbo" path="res://game/sabers/default/tail.tscn" id="6_wpbvo"]
@@ -284,10 +284,10 @@ tracks/6/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ox0xw"]
 _data = {
-"Hide": SubResource("4"),
-"QuickHide": SubResource("5"),
-"RESET": SubResource("Animation_ddgay"),
-"Show": SubResource("6")
+&"Hide": SubResource("4"),
+&"QuickHide": SubResource("5"),
+&"RESET": SubResource("Animation_ddgay"),
+&"Show": SubResource("6")
 }
 
 [node name="default_saber" type="Node3D"]

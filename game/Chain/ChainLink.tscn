@@ -1,8 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://b62c3hkjmky75"]
+[gd_scene load_steps=9 format=3 uid="uid://b62c3hkjmky75"]
 
-[ext_resource type="Script" path="res://game/Chain/ChainLink.gd" id="1_8l7tk"]
+[ext_resource type="Script" uid="uid://s5ndilu7tl6f" path="res://game/Chain/ChainLink.gd" id="1_8l7tk"]
 [ext_resource type="PackedScene" uid="uid://bbsbv2l8r8kxm" path="res://game/Chain/ChainLink.glb" id="2_jgcvi"]
-[ext_resource type="Material" uid="uid://cvyav7ol7yep4" path="res://game/Chain/ChainLink.material" id="3_c2d47"]
+[ext_resource type="Shader" uid="uid://sqdgn1rip22u" path="res://game/Chain/ChainLink.gdshader" id="3_fnqer"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fnqer"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_fnqer")
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/cutted = false
+shader_parameter/cut_dist_from_center = 0.0
+shader_parameter/cut_angle = 0.0
+shader_parameter/cut_vanish = 0.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_thkam"]
 size = Vector3(0.8, 0.1, 1)
@@ -63,8 +73,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7xfev"]
 _data = {
-"RESET": SubResource("Animation_tbh3g"),
-"Spawn": SubResource("3")
+&"RESET": SubResource("Animation_tbh3g"),
+&"Spawn": SubResource("3")
 }
 
 [node name="ChainLink" type="Node3D"]
@@ -72,7 +82,7 @@ script = ExtResource("1_8l7tk")
 
 [node name="Mesh" parent="." instance=ExtResource("2_jgcvi")]
 layers = 3
-material_override = ExtResource("3_c2d47")
+material_override = SubResource("ShaderMaterial_fnqer")
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 768
@@ -86,5 +96,5 @@ disabled = true
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Mesh")
 libraries = {
-"": SubResource("AnimationLibrary_7xfev")
+&"": SubResource("AnimationLibrary_7xfev")
 }

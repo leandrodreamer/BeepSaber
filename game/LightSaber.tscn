@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://n1wrym3osxb8"]
 
 [ext_resource type="PackedScene" uid="uid://bw3rjal5qlu0p" path="res://game/sabers/default/default_saber.tscn" id="1"]
-[ext_resource type="Script" path="res://game/LightSaber.gd" id="2"]
+[ext_resource type="Script" uid="uid://du0fxf6yx4dcf" path="res://game/LightSaber.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://chkilqvhyqt37" path="res://game/scripts/SwingableRayCast/SwingableRayCast.tscn" id="3"]
 
 [sub_resource type="Animation" id="2"]
@@ -127,10 +127,10 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l1r6j"]
 _data = {
-"Hide": SubResource("2"),
-"QuickHide": SubResource("3"),
-"RESET": SubResource("Animation_solq6"),
-"Show": SubResource("4")
+&"Hide": SubResource("2"),
+&"QuickHide": SubResource("3"),
+&"RESET": SubResource("Animation_solq6"),
+&"Show": SubResource("4")
 }
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_38d8l"]

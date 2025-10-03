@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjghkpsy3r8tp"]
 
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_UI2D/controls/VirtualKeyboard.gd" id="1"]
+[ext_resource type="Script" uid="uid://dot0yqtenpgx7" path="res://OQ_Toolkit/OQ_UI2D/controls/VirtualKeyboard.gd" id="1"]
 [ext_resource type="Theme" uid="uid://dvcjel72een6o" path="res://OQ_Toolkit/OQ_UI2D/theme/oq_ui2d_standard.theme" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="1"]

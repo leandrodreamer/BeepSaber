@@ -154,7 +154,8 @@ var default_values = {
 	audio_music = 0.8,
 	audio_sfx = 0.8,
 	spectator_view = false,
-	spectator_hud = true
+	spectator_hud = true,
+	obstacle_color = Color(1,0,0)
 }
 
 func cast_or_default(key: String, to_type: int = -1) -> Variant:

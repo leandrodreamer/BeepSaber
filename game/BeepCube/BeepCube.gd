@@ -34,27 +34,49 @@ func _ready() -> void:
 	# slice_particles are within cube's tree, but want then to move in global space
 	slice_particles.top_level = true
 	
-func spawn(note_info: ColorNoteInfo, current_beat: float) -> void:
+func spawn(note_info: ColorNoteInfo, current_beat: float, color : Color) -> void:
 	# re-enable our process_mode first otherwise it seems like Godot-internals
 	# can behave weirdly (ex. AnimationPlayer won't always play correctly)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	var color := Map.color_left if note_info.color == 0 else Map.color_right
-	speed = Constants.BEAT_DISTANCE * Map.current_info.beats_per_minute * 0.016666666666666667
+	#var color := Map.color_left if note_info.color == 0 else Map.color_right
+	speed = Constants.BEAT_DISTANCE * Map.current_info.beats_per_minute * 0.01666666666666666
 	beat = note_info.beat
 	which_saber = note_info.color
 	is_dot = note_info.cut_direction == 8
+
+	#if note_info.line_index > 3 or note_info.line_index < 0 or note_info.line_layer > 2 or note_info.line_layer < 0:
+	var noteLineIndex = note_info.line_index
+	var noteLayerIndex = note_info.line_layer
+	var leftSide = false
+	var flipLineIndex = noteLineIndex * -1
+	var newLaneCount = 1000
+	if noteLineIndex >= 1000 or noteLineIndex <= -1000:
+		if sign(note_info.line_index) == 1:
+			transform.origin.x = (note_info.line_index / 1000.0) - 2.5
+		else:
+			transform.origin.x = (note_info.line_index / 1000.0) - 0.5
+		transform.origin.y = (noteLayerIndex - 1000.0) / 1000.0 + 0.8
+	else:
+		transform.origin.x = (note_info.line_index * 0.6) + Constants.LANE_ZERO_X
+		transform.origin.y = (note_info.line_layer * 0.6) + Constants.LAYER_ZERO_Y
+
+	transform.origin.z = - (note_info.beat - current_beat) * Constants.BEAT_DISTANCE
+	if note_info.cut_direction < 9:
+		rotation.z = Constants.CUBE_ROTATIONS[note_info.cut_direction] + deg_to_rad(note_info.angle_offset)
+	else:
+		rotation.z = deg_to_rad((note_info.cut_direction - 1000) * -1)
+	#else:
+		#transform.origin.x = Constants.LANE_X[note_info.line_index]
+		#transform.origin.y = Constants.LAYER_Y[note_info.line_layer]
+		#transform.origin.z = - (note_info.beat - current_beat) * Constants.BEAT_DISTANCE
+		#rotation.z = Constants.CUBE_ROTATIONS[note_info.cut_direction] + deg_to_rad(note_info.angle_offset)
+
 	
 	if is_dot:
 		(collision_big.shape as BoxShape3D).size.y = 0.8
 	else:
 		(collision_big.shape as BoxShape3D).size.y = 0.5
-	
-	transform.origin.x = Constants.LANE_DISTANCE * float(note_info.line_index) + Constants.LANE_ZERO_X
-	transform.origin.y = Constants.LANE_DISTANCE * float(note_info.line_layer) + Constants.LAYER_ZERO_Y
-	transform.origin.z = -(note_info.beat - current_beat) * Constants.BEAT_DISTANCE
-	
-	rotation.z = Constants.CUBE_ROTATIONS[note_info.cut_direction] + deg_to_rad(note_info.angle_offset)
 	
 	piece_left.set_color(color)
 	piece_right.set_color(color)
@@ -90,6 +112,7 @@ func spawn(note_info: ColorNoteInfo, current_beat: float) -> void:
 	mi.visible = true
 
 # call this when clearing the track
+# soon I'll add my optimization that really helps.
 func clear_from_track() -> void:
 	hide_cube()
 	piece_left.hide_piece()

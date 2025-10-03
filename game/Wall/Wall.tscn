@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://iglrdadxsqw4"]
 
 [ext_resource type="Material" uid="uid://mu4iyylnwc38" path="res://game/Wall/wall_new2.material" id="1"]
-[ext_resource type="Script" path="res://game/Wall/Wall.gd" id="2"]
+[ext_resource type="Script" uid="uid://emg0fkvwg77m" path="res://game/Wall/Wall.gd" id="2"]
 
 [sub_resource type="BoxMesh" id="1"]
 resource_local_to_scene = true
@@ -25,7 +25,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wf5pt"]
 _data = {
-"Spawn": SubResource("3")
+&"Spawn": SubResource("3")
 }
 
 [node name="Wall" type="Node3D" groups=["wall"]]
@@ -47,5 +47,5 @@ shape = SubResource("2")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../WallMeshOrientation")
 libraries = {
-"": SubResource("AnimationLibrary_wf5pt")
+&"": SubResource("AnimationLibrary_wf5pt")
 }

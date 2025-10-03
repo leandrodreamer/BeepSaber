@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1ymdeffodj88"]
 
-[ext_resource type="Script" path="res://game/scripts/webxr/webxr_initializer.gd" id="1_dvjo7"]
+[ext_resource type="Script" uid="uid://dgwy23yv1c17r" path="res://game/scripts/webxr/webxr_initializer.gd" id="1_dvjo7"]
 
 [node name="WebxrInitializer" type="CanvasLayer"]
 layer = 10

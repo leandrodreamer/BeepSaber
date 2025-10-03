@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cl1dig23jiq45"]
 
-[ext_resource type="Script" path="res://game/Arc/Arc.gd" id="1_5s55r"]
+[ext_resource type="Script" uid="uid://cpdv34txsafyx" path="res://game/Arc/Arc.gd" id="1_5s55r"]
 [ext_resource type="Material" uid="uid://cripndlpd8xp1" path="res://game/Arc/Arc.material" id="2_6ceex"]
 
 [sub_resource type="Curve3D" id="Curve3D_n4apf"]

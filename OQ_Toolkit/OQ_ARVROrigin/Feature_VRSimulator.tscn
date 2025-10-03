@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b51lxj766o73h"]
 
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_ARVROrigin/scripts/Feature_VRSimulator.gd" id="1"]
+[ext_resource type="Script" uid="uid://btob32w00yy68" path="res://OQ_Toolkit/OQ_ARVROrigin/scripts/Feature_VRSimulator.gd" id="1"]
 
 [node name="Feature_VRSimulator" type="Node3D"]
 script = ExtResource("1")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bw1m0m5qftnsb"]
 
-[ext_resource type="Script" path="res://game/ui/YouTubeUI/YouTubeAPI/YouTubeAPI.gd" id="1"]
+[ext_resource type="Script" uid="uid://bcqq37mo8dvli" path="res://game/ui/YouTubeUI/YouTubeAPI/YouTubeAPI.gd" id="1"]
 
 [node name="YouTubeAPI" type="Node"]
 script = ExtResource("1")

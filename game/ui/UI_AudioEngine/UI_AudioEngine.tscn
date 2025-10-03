@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://rkj0m5l66401"]
 
 [ext_resource type="AudioStream" uid="uid://d1m0nnw518aku" path="res://game/data/click_002.ogg" id="1"]
-[ext_resource type="Script" path="res://game/ui/UI_AudioEngine/UI_AudioEngine.gd" id="2"]
+[ext_resource type="Script" uid="uid://cuh4k2l1fugu6" path="res://game/ui/UI_AudioEngine/UI_AudioEngine.gd" id="2"]
 
 [node name="UI_AudioEngine" type="Node"]
 script = ExtResource("2")

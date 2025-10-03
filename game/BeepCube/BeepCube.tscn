@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://dvj8dorx2l7s0"]
 
-[ext_resource type="Script" path="res://game/BeepCube/BeepCube.gd" id="1_7mymb"]
+[ext_resource type="Script" uid="uid://brbavsh8gpkhe" path="res://game/BeepCube/BeepCube.gd" id="1_7mymb"]
 [ext_resource type="PackedScene" uid="uid://bghawm0dmboxm" path="res://game/BeepCube/BeepCubeMesh.glb" id="2_sbb11"]
-[ext_resource type="Shader" path="res://game/BeepCube/BeepCube.gdshader" id="3_7slj3"]
+[ext_resource type="Shader" uid="uid://cupcyi03bwler" path="res://game/BeepCube/BeepCube.gdshader" id="3_7slj3"]
 [ext_resource type="Texture2D" uid="uid://drc5tdiltfqnk" path="res://game/BeepCube/BeepCubeEmission.png" id="4_10m2m"]
 [ext_resource type="PackedScene" uid="uid://cplhsipk6vhem" path="res://game/BeepCube/BeepCube_SliceParticles.tscn" id="5_tissj"]
 
@@ -68,15 +68,16 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7xfev"]
 _data = {
-"RESET": SubResource("Animation_tbh3g"),
-"Spawn": SubResource("3")
+&"RESET": SubResource("Animation_tbh3g"),
+&"Spawn": SubResource("3")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gk6d3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x86ma"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_7slj3")
 shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/texture_emission = ExtResource("4_10m2m")
 shader_parameter/metallic = 0.3
 shader_parameter/roughness = 0.2
 shader_parameter/sub_emission_energy = 0.18
@@ -87,7 +88,6 @@ shader_parameter/cut_angle = 0.0
 shader_parameter/cut_white_margin = 0.04
 shader_parameter/is_dot = false
 shader_parameter/is_chain_head = false
-shader_parameter/texture_emission = ExtResource("4_10m2m")
 
 [node name="BeepCube" type="Node3D"]
 script = ExtResource("1_7mymb")
@@ -110,12 +110,12 @@ disabled = true
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../BeepCubeMesh")
 libraries = {
-"": SubResource("AnimationLibrary_7xfev")
+&"": SubResource("AnimationLibrary_7xfev")
 }
 
 [node name="BeepCubeMesh" parent="." instance=ExtResource("2_sbb11")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 layers = 3
-material_override = SubResource("ShaderMaterial_gk6d3")
+material_override = SubResource("ShaderMaterial_x86ma")
 
 [node name="SliceParticles" parent="." instance=ExtResource("5_tissj")]

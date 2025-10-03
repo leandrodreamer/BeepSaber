@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://biylg2wsontn3"]
 
 [ext_resource type="FontFile" uid="uid://01k27lk2a4bw" path="res://OQ_Toolkit/OQ_UI2D/theme/RobotoMono-Medium.ttf" id="1"]
-[ext_resource type="Script" path="res://game/settings_Panel.gd" id="2"]
+[ext_resource type="Script" uid="uid://d6tn4tw5j5v6" path="res://game/settings_Panel.gd" id="2"]
 [ext_resource type="FontFile" uid="uid://cdsnr8tscm8y6" path="res://OQ_Toolkit/OQ_UI2D/theme/Roboto-Medium.ttf" id="3"]
 [ext_resource type="PackedScene" uid="uid://dtipmx5ep1dkk" path="res://game/vr_slider.tscn" id="4"]
 

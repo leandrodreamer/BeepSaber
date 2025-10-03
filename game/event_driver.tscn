@@ -1,6 +1,6 @@
 [gd_scene load_steps=35 format=3 uid="uid://qjvg3reomvyk"]
 
-[ext_resource type="Script" path="res://game/event_driver.gd" id="2"]
+[ext_resource type="Script" uid="uid://b6pfpqv0i0umg" path="res://game/event_driver.gd" id="2"]
 [ext_resource type="ArrayMesh" uid="uid://cy814avk383k" path="res://game/data/ring.obj" id="3"]
 [ext_resource type="Texture2D" uid="uid://dyrjirngmo2mx" path="res://game/data/background/bg_base.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://dni5frh7n4p12" path="res://game/data/background/bg_2.png" id="6"]
@@ -58,6 +58,12 @@ void fragment(){
 [sub_resource type="ShaderMaterial" id="5"]
 render_priority = 0
 shader = SubResource("4")
+shader_parameter/bg_base = ExtResource("5")
+shader_parameter/bg_0 = ExtResource("7")
+shader_parameter/bg_1 = ExtResource("10")
+shader_parameter/bg_2 = ExtResource("6")
+shader_parameter/bg_3 = ExtResource("9")
+shader_parameter/bg_4 = ExtResource("10")
 shader_parameter/bg_0_intensity = 0.0
 shader_parameter/bg_1_intensity = 0.0
 shader_parameter/bg_2_intensity = 0.0
@@ -74,12 +80,6 @@ shader_parameter/bg_1_intensity_mult = 0.15
 shader_parameter/bg_2_intensity_mult = 0.25
 shader_parameter/bg_3_intensity_mult = 0.25
 shader_parameter/bg_4_intensity_mult = 0.4
-shader_parameter/bg_base = ExtResource("5")
-shader_parameter/bg_0 = ExtResource("7")
-shader_parameter/bg_1 = ExtResource("10")
-shader_parameter/bg_2 = ExtResource("6")
-shader_parameter/bg_3 = ExtResource("9")
-shader_parameter/bg_4 = ExtResource("10")
 
 [sub_resource type="SphereMesh" id="6"]
 flip_faces = true
@@ -159,7 +159,7 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ghmyd"]
 _data = {
-"laser_anim": SubResource("13")
+&"laser_anim": SubResource("13")
 }
 
 [sub_resource type="StandardMaterial3D" id="14"]
@@ -220,7 +220,7 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x47bd"]
 _data = {
-"laser_anim": SubResource("15")
+&"laser_anim": SubResource("15")
 }
 
 [sub_resource type="Gradient" id="Gradient_0q6si"]
@@ -582,8 +582,8 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_710ni"]
 _data = {
-"in": SubResource("21"),
-"out": SubResource("22")
+&"in": SubResource("21"),
+&"out": SubResource("22")
 }
 
 [node name="event_driver" type="Node3D"]

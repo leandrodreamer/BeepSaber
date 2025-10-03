@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://383dbnh6gxd3"]
 
 [ext_resource type="FontFile" uid="uid://01k27lk2a4bw" path="res://OQ_Toolkit/OQ_UI2D/theme/RobotoMono-Medium.ttf" id="1"]
-[ext_resource type="Script" path="res://game/ui/BeatSaverPanel/BeatSaverPanel.gd" id="2"]
+[ext_resource type="Script" uid="uid://b26jhmupwl0hk" path="res://game/ui/BeatSaverPanel/BeatSaverPanel.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dtipmx5ep1dkk" path="res://game/vr_slider.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://cviyxvrpvyr0g" path="res://game/data/beepsaber_logo.png" id="5"]
 [ext_resource type="Theme" uid="uid://cbutfawaljce6" path="res://game/BlackWhiteThem.tres" id="6"]

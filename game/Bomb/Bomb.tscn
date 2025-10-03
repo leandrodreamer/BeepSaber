@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://6du64wi28yi6"]
 
 [ext_resource type="PackedScene" uid="uid://cxpnql8hhru8j" path="res://game/Bomb/BombMesh.tscn" id="1"]
-[ext_resource type="Script" path="res://game/Bomb/Bomb.gd" id="2"]
+[ext_resource type="Script" uid="uid://byluxuyjs1b1n" path="res://game/Bomb/Bomb.gd" id="2"]
 
 [sub_resource type="SphereShape3D" id="1"]
 radius = 0.154
@@ -47,7 +47,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4a1di"]
 _data = {
-"Spawn": SubResource("2")
+&"Spawn": SubResource("2")
 }
 
 [node name="Bomb" type="Node3D"]

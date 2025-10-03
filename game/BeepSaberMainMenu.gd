@@ -202,20 +202,121 @@ func play_preview(buffer: PackedByteArray, start_time: float = 0.0, duration: fl
 		song_preview.play(start_time)
 		($song_prev/stop_prev as Timer).start(duration)
 
-func _select_song(id: int) -> void:
+func _select_song(id: int) -> void :
 	current_selected = id
 	songs_menu.ensure_current_is_visible()
 	delete_button.disabled = false
-	
-	var map := _currently_selected_songlist_ref[id]
+
+	var map: = _currently_selected_songlist_ref[id]
+	var modsNeeded = "None"
+	var filePath = map.filepath + "info.dat"
+	Constants.usingMappingExtension = false
+	if FileAccess.file_exists(filePath):
+		var mods = vr.load_json_file(filePath)
+		if mods:
+			var beatmap_sets = mods.get("_difficultyBeatmapSets", [])
+			if beatmap_sets.size() > 0:
+
+				var first_set = beatmap_sets[0]
+				var difficulty_beatmaps = first_set.get("_difficultyBeatmaps", [])
+
+				if difficulty_beatmaps.size() > 0:
+
+					var first_difficulty = difficulty_beatmaps[0]
+					var custom_data = first_difficulty.get("_customData", {})
+
+					if custom_data.has("_requirements"):
+						var requirements = custom_data.get("_requirements")
+						print(requirements)
+						if len(requirements) > 0:
+							if modsNeeded == "None": 
+								modsNeeded = ""
+							for i in len(requirements):
+								print(requirements[i])
+								modsNeeded = requirements[i] + "\n" + modsNeeded
+								Constants.usingMappingExtension = requirements.has("Mapping Extensions")
+								Constants.usingNoodleExtension = requirements.has("Noodle Extensions")
+								Constants.usingChroma = requirements.has("Chroma")
+								Constants.usingVivify = requirements.has("Vivify")
+						else:
+							modsNeeded = "None"
+							Constants.usingMappingExtension = false
+							Constants.usingNoodleExtension = false
+							Constants.usingChroma = false
+							Constants.usingVivify = false
+					if custom_data.has("_suggestions"):
+						var suggestions = custom_data.get("_suggestions")
+						if modsNeeded == "None": 
+							modsNeeded = ""
+						for i in len(suggestions):
+							if not modsNeeded.contains("Chroma"):
+								modsNeeded = suggestions[i] + "\n" + modsNeeded
+							elif suggestions[i] != "Chroma":
+								modsNeeded = suggestions[i] + "\n" + modsNeeded
+							if suggestions.has("Chroma"):
+								Constants.usingChroma = true
+							else:
+								Constants.usingChroma = false
+					else:
+							modsNeeded = "None"
+							Constants.usingChroma = false
+	else:
+
+
+		filePath = map.filepath + "Info.dat"
+		var mods = vr.load_json_file(filePath)
+		if mods:
+			var beatmap_sets = mods.get("_difficultyBeatmapSets", [])
+			if beatmap_sets.size() > 0:
+
+				var first_set = beatmap_sets[0]
+				var difficulty_beatmaps = first_set.get("_difficultyBeatmaps", [])
+
+				if difficulty_beatmaps.size() > 0:
+
+					var first_difficulty = difficulty_beatmaps[0]
+					var custom_data = first_difficulty.get("_customData", {})
+
+					if custom_data.has("_requirements"):
+						var requirements = custom_data.get("_requirements")
+						if len(requirements) > 0:
+							if modsNeeded == "None":
+								modsNeeded = ""
+							for i in len(requirements):
+								modsNeeded = requirements[i] + "\n" + modsNeeded
+								Constants.usingMappingExtension = requirements.has("Mapping Extensions")
+								Constants.usingNoodleExtension = requirements.has("Noodle Extensions")
+								Constants.usingChroma = requirements.has("Chroma")
+								Constants.usingVivify = requirements.has("Vivify")
+						else:
+							modsNeeded = "None"
+							Constants.usingMappingExtension = false
+							Constants.usingNoodleExtension = false
+							Constants.usingChroma = false
+							Constants.usingVivify = false
+					if custom_data.has("_suggestions"):
+						var suggestions = custom_data.get("_suggestions")
+						if modsNeeded == "None":
+							modsNeeded = ""
+						for i in len(suggestions):
+							modsNeeded = suggestions[i] + "\n" + modsNeeded
+							Constants.usingChroma = suggestions.has("Chroma")
+					else:
+							modsNeeded = "None"
+							Constants.usingChroma = false
+	#warnMapping.visible = Constants.usingMappingExtension
+	#warnNoodle.visible = Constants.usingNoodleExtension
+	#warnChroma.visible = Constants.usingChroma
 	($SongInfo_Label as Label).text = """Song Author: %s
 	Song Title: %s
 	Beatmap Author: %s
-	Play Count: %d""" % [
+	Play Count: %d
+	Mods requrired: %s""" % [
 		map.song_author_name,
 		map.song_name,
 		map.level_author_name,
-		PlayCount.get_total_play_count(map)
+		PlayCount.get_total_play_count(map),
+		modsNeeded
 	]
 	
 	# load cover in background to avoid freezing UI

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://deoh1pl5kvqei"]
 
-[ext_resource type="Script" path="res://game/points_label.gd" id="2"]
+[ext_resource type="Script" uid="uid://chqmv5dvvm0af" path="res://game/points_label.gd" id="2"]
 
 [sub_resource type="Animation" id="6"]
 resource_name = "hit"
@@ -32,7 +32,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cdesj"]
 _data = {
-"hit": SubResource("6")
+&"hit": SubResource("6")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1gu7s"]

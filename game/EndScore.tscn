@@ -1,12 +1,12 @@
 [gd_scene load_steps=25 format=3 uid="uid://i5nhm2p2kqay"]
 
-[ext_resource type="Shader" path="res://game/UI_Panel.gdshader" id="1_cfcnp"]
-[ext_resource type="Script" path="res://game/EndScore.gd" id="1_jacne"]
+[ext_resource type="Shader" uid="uid://lty4t7agwgb7" path="res://game/UI_Panel.gdshader" id="1_cfcnp"]
+[ext_resource type="Script" uid="uid://do1ecop7u4xqy" path="res://game/EndScore.gd" id="1_jacne"]
 [ext_resource type="PackedScene" uid="uid://63fr72w7kh2w" path="res://game/PercentIndicator.tscn" id="2_dpn16"]
 [ext_resource type="PackedScene" uid="uid://bxsfwm7o1kryl" path="res://game/scripts/UIRaycast/UIRaycastButton.tscn" id="4_n4s7s"]
 [ext_resource type="FontFile" uid="uid://01k27lk2a4bw" path="res://OQ_Toolkit/OQ_UI2D/theme/RobotoMono-Medium.ttf" id="5_v4xkn"]
 [ext_resource type="Material" uid="uid://dqox51k4cngtf" path="res://game/Text.material" id="6_2vw0d"]
-[ext_resource type="Script" path="res://game/scripts/UIRaycast/UIRaycastTarget.gd" id="6_25iqa"]
+[ext_resource type="Script" uid="uid://fsrdw537jtcq" path="res://game/scripts/UIRaycast/UIRaycastTarget.gd" id="6_25iqa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_igkn4"]
 render_priority = 0

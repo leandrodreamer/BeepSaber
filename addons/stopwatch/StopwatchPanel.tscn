@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://csonoepl7hjxg"]
 
 [ext_resource type="PackedScene" uid="uid://cneswi377lbr3" path="res://addons/stopwatch/StopwatchClient.tscn" id="1"]
-[ext_resource type="Script" path="res://addons/stopwatch/StopwatchPanel.gd" id="2"]
+[ext_resource type="Script" uid="uid://d1ovpjl6cp33j" path="res://addons/stopwatch/StopwatchPanel.gd" id="2"]
 
 [node name="StopwatchPanel" type="MarginContainer"]
 anchor_right = 1.0

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cs4lqw0fmwcqy"]
 
 [ext_resource type="PackedScene" uid="uid://dvj8dorx2l7s0" path="res://game/BeepCube/BeepCube.tscn" id="1_o0b4s"]
-[ext_resource type="Script" path="res://game/scripts/BeepSaberController.gd" id="3_3o1m2"]
+[ext_resource type="Script" uid="uid://c4u23qsibqd12" path="res://game/scripts/BeepSaberController.gd" id="3_3o1m2"]
 [ext_resource type="PackedScene" uid="uid://bw3rjal5qlu0p" path="res://game/sabers/default/default_saber.tscn" id="3_s14uu"]
 
 [sub_resource type="GDScript" id="GDScript_u17fx"]

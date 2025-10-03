@@ -1,11 +1,11 @@
 [gd_scene load_steps=24 format=3 uid="uid://bpur4cpfjskxt"]
 
-[ext_resource type="Script" path="res://game/sabers/particles/particles_saber.gd" id="1"]
+[ext_resource type="Script" uid="uid://cexatnfkvb01" path="res://game/sabers/particles/particles_saber.gd" id="1"]
 [ext_resource type="ArrayMesh" uid="uid://cq3betaoj4fv8" path="res://game/sabers/particles/sword.obj" id="2"]
 [ext_resource type="Texture2D" uid="uid://drc5tdiltfqnk" path="res://game/BeepCube/BeepCubeEmission.png" id="2_ffgv8"]
 [ext_resource type="AudioStream" uid="uid://20lqjew01h0j" path="res://game/sabers/particles/sword_clash.8a.ogg" id="3"]
 [ext_resource type="Texture2D" uid="uid://cg6kwny2mi3wq" path="res://game/data/gradient.png" id="4"]
-[ext_resource type="Shader" path="res://game/LightSaber.gdshader" id="5"]
+[ext_resource type="Shader" uid="uid://dib2663odt6qj" path="res://game/LightSaber.gdshader" id="5"]
 [ext_resource type="AudioStream" uid="uid://bsy5s05go6qg3" path="res://game/sabers/particles/sword_clash.10.ogg" id="6"]
 [ext_resource type="PackedScene" uid="uid://buhdimf18mwbo" path="res://game/sabers/default/tail.tscn" id="8_m1jst"]
 
@@ -306,10 +306,10 @@ tracks/7/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kyofm"]
 _data = {
-"Hide": SubResource("3"),
-"QuickHide": SubResource("4"),
-"RESET": SubResource("Animation_y7mm6"),
-"Show": SubResource("5")
+&"Hide": SubResource("3"),
+&"QuickHide": SubResource("4"),
+&"RESET": SubResource("Animation_y7mm6"),
+&"Show": SubResource("5")
 }
 
 [sub_resource type="Gradient" id="Gradient_d20e8"]

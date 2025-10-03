@@ -58,7 +58,12 @@ func _process_map(game: BeepSaber_Game) -> void:
 	while not Map.note_stack.is_empty() and Map.note_stack[-1].beat <= look_ahead:
 		var note := GlobalReferences.cube_pool.acquire() as BeepCube
 		var note_info := Map.note_stack.pop_back() as ColorNoteInfo
-		note.spawn(note_info, current_beat)
+		var color: = Map.color_left if note_info.color == 0 else Map.color_right
+		print(note_info.custom_data)
+		if note_info.custom_data.has("_color"):
+			note.spawn(note_info, current_beat, Color(note_info.custom_data["_color"][0], note_info.custom_data["_color"][1], note_info.custom_data["_color"][2]))
+		else:
+			note.spawn(note_info, current_beat, color)
 		note_info_refs.append(note_info)
 		cube_refs.append(note)
 	
@@ -71,7 +76,11 @@ func _process_map(game: BeepSaber_Game) -> void:
 	# spawn obstacles (walls)
 	while not Map.obstacle_stack.is_empty() and Map.obstacle_stack[-1].beat <= look_ahead:
 		var wall := wall_template.instantiate() as Wall
-		wall.spawn(Map.obstacle_stack.pop_back() as ObstacleInfo, current_beat)
+		var wall_info: = Map.obstacle_stack.pop_back() as ObstacleInfo
+		if wall_info.custom_data.has("_color"):
+			wall.spawn(wall_info, current_beat, Color(wall_info.custom_data["_color"][0], wall_info.custom_data["_color"][1], wall_info.custom_data["_color"][2]))
+		else:
+			wall.spawn(wall_info, current_beat, Settings.default_values.obstacle_color)
 		game.track.add_child(wall)
 	
 	while not Map.arc_stack.is_empty() and Map.arc_stack[-1].head_beat <= look_ahead:

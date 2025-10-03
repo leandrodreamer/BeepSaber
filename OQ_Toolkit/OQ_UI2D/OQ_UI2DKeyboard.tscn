@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://crstqa7v6ehg3" path="res://OQ_Toolkit/OQ_UI2D/OQ_UI2DCanvas.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://cjghkpsy3r8tp" path="res://OQ_Toolkit/OQ_UI2D/controls/VirtualKeyboard.tscn" id="2"]
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_UI2D/scripts/OQ_UI2DKeyboard.gd" id="3"]
+[ext_resource type="Script" uid="uid://c4d1g0xa068ko" path="res://OQ_Toolkit/OQ_UI2D/scripts/OQ_UI2DKeyboard.gd" id="3"]
 [ext_resource type="Theme" uid="uid://dvcjel72een6o" path="res://OQ_Toolkit/OQ_UI2D/theme/oq_ui2d_standard.theme" id="4"]
 
 [node name="OQ_UI2DKeyboard" type="Node3D"]

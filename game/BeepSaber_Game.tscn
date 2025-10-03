@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dqb3ybvpsfcbw"]
+[gd_scene load_steps=45 format=3 uid="uid://dqb3ybvpsfcbw"]
 
 [ext_resource type="PackedScene" uid="uid://cs8e62lsifik5" path="res://game/floor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d04fmtjhjx4oy" path="res://OQ_Toolkit/OQ_UI2D/OQ_UI2DLabel.tscn" id="2"]
@@ -6,16 +6,17 @@
 [ext_resource type="PackedScene" uid="uid://iglrdadxsqw4" path="res://game/Wall/Wall.tscn" id="3_73652"]
 [ext_resource type="PackedScene" uid="uid://iiatb07725bg" path="res://game/SpectatorWindow.tscn" id="6_g42ih"]
 [ext_resource type="PackedScene" uid="uid://b08nwxm66uyir" path="res://game/vr_goggles.glb" id="7_e6irq"]
-[ext_resource type="Script" path="res://game/scripts/BeepSaberController.gd" id="8_5lcn1"]
-[ext_resource type="Shader" path="res://game/vr_goggles.gdshader" id="8_7x23q"]
-[ext_resource type="Script" path="res://game/BeepSaber_Game.gd" id="9"]
+[ext_resource type="Script" uid="uid://c5q6fwwowulxf" path="res://game/player.gd" id="7_sm0lh"]
+[ext_resource type="Script" uid="uid://c4u23qsibqd12" path="res://game/scripts/BeepSaberController.gd" id="8_5lcn1"]
+[ext_resource type="Shader" uid="uid://nxwxoum3ynv1" path="res://game/vr_goggles.gdshader" id="8_7x23q"]
+[ext_resource type="Script" uid="uid://xdwe7pllqpih" path="res://game/BeepSaber_Game.gd" id="9"]
 [ext_resource type="PackedScene" uid="uid://n1wrym3osxb8" path="res://game/LightSaber.tscn" id="10"]
 [ext_resource type="PackedScene" uid="uid://glii0poslcve" path="res://game/BeepSaberMainMenu.tscn" id="11"]
 [ext_resource type="PackedScene" uid="uid://cisgyiarwaf2i" path="res://game/scripts/UIRaycast/UIRaycast.tscn" id="12"]
 [ext_resource type="PackedScene" uid="uid://qjvg3reomvyk" path="res://game/event_driver.tscn" id="13"]
 [ext_resource type="Material" uid="uid://dqox51k4cngtf" path="res://game/Text.material" id="13_3xkki"]
 [ext_resource type="Sky" uid="uid://byunh6ley5hib" path="res://game/background_sky.tres" id="14"]
-[ext_resource type="Shader" path="res://game/PercentIndicator.gdshader" id="14_155do"]
+[ext_resource type="Shader" uid="uid://bkt21vetmleqj" path="res://game/PercentIndicator.gdshader" id="14_155do"]
 [ext_resource type="PackedScene" uid="uid://63fr72w7kh2w" path="res://game/PercentIndicator.tscn" id="16"]
 [ext_resource type="PackedScene" uid="uid://f53k0dxxtenr" path="res://game/Pause_Panel.tscn" id="18"]
 [ext_resource type="PackedScene" uid="uid://biylg2wsontn3" path="res://game/settings_Panel.tscn" id="19"]
@@ -32,7 +33,7 @@
 [ext_resource type="PackedScene" uid="uid://bmdbiqndkvcm6" path="res://game/ui/BeatSageUI/BeatSageUI.tscn" id="29"]
 [ext_resource type="PackedScene" uid="uid://cbbovki8xp6e2" path="res://game/GodotSplash.tscn" id="29_vrn2v"]
 [ext_resource type="PackedScene" uid="uid://cgfj82g2xp1ne" path="res://OQ_Toolkit/OQ_UI2D/OQ_UI2DLogWindow.tscn" id="31"]
-[ext_resource type="Script" path="res://game/scripts/SongUploader/song_uploader.gd" id="33_l0uxg"]
+[ext_resource type="Script" uid="uid://pmppoemwkiha" path="res://game/scripts/SongUploader/song_uploader.gd" id="33_l0uxg"]
 [ext_resource type="PackedScene" uid="uid://dvj8dorx2l7s0" path="res://game/BeepCube/BeepCube.tscn" id="33_nc705"]
 [ext_resource type="PackedScene" uid="uid://b62c3hkjmky75" path="res://game/Chain/ChainLink.tscn" id="34_tsovg"]
 
@@ -115,6 +116,7 @@ playback_type = 1
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+script = ExtResource("7_sm0lh")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)

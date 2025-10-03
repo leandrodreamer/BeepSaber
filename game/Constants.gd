@@ -12,3 +12,8 @@ var ROTATION_UNIT_VECTORS := PackedVector2Array([
 	Vector2(-0.70710678, -0.70710678), Vector2(0.70710678, -0.70710678), Vector2(0,1)
 ])
 const APPDATA_PATH := "user://OpenSaber/"
+
+var usingMappingExtension = false
+var usingNoodleExtension = false
+var usingChroma = false
+var usingVivify = false

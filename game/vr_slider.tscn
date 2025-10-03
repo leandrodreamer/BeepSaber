@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dtipmx5ep1dkk"]
 
-[ext_resource type="Script" path="res://game/vr_slider.gd" id="1"]
+[ext_resource type="Script" uid="uid://0wxhm6egkj0g" path="res://game/vr_slider.gd" id="1"]
 
 [node name="vr_slider" type="Node"]
 script = ExtResource("1")

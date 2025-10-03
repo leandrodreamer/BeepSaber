@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://crstqa7v6ehg3"]
 
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_UI2D/scripts/OQ_UI2DCanvas.gd" id="1"]
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_UI2D/scripts/helper_UIArea.gd" id="2"]
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_UI2D/scripts/update_viewport_once.gd" id="3_2prlg"]
+[ext_resource type="Script" uid="uid://ba1xiao32h48n" path="res://OQ_Toolkit/OQ_UI2D/scripts/OQ_UI2DCanvas.gd" id="1"]
+[ext_resource type="Script" uid="uid://djfexsffsmx08" path="res://OQ_Toolkit/OQ_UI2D/scripts/helper_UIArea.gd" id="2"]
+[ext_resource type="Script" uid="uid://c5xcgvsbk6mm7" path="res://OQ_Toolkit/OQ_UI2D/scripts/update_viewport_once.gd" id="3_2prlg"]
 
 [sub_resource type="BoxShape3D" id="1"]
 margin = 0.001

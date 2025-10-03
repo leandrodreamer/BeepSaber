@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://btf734vme0j3t"]
 
-[ext_resource type="Script" path="res://game/ui/MapDownloadPanel/MapSourceButton.gd" id="2"]
+[ext_resource type="Script" uid="uid://dtdb1k0fr2g72" path="res://game/ui/MapDownloadPanel/MapSourceButton.gd" id="2"]
 [ext_resource type="Theme" uid="uid://cbutfawaljce6" path="res://game/BlackWhiteThem.tres" id="3"]
 
 [node name="Button" type="Button"]

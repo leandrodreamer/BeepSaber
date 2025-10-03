@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://crstqa7v6ehg3" path="res://OQ_Toolkit/OQ_UI2D/OQ_UI2DCanvas.tscn" id="1"]
 [ext_resource type="Theme" uid="uid://dvcjel72een6o" path="res://OQ_Toolkit/OQ_UI2D/theme/oq_ui2d_standard.theme" id="2"]
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_UI2D/scripts/OQ_UI2DLogWindow.gd" id="3"]
+[ext_resource type="Script" uid="uid://o3t0kbonwk0x" path="res://OQ_Toolkit/OQ_UI2D/scripts/OQ_UI2DLogWindow.gd" id="3"]
 
 [node name="OQ_UI2DLogWindow" type="Node3D"]
 script = ExtResource("3")

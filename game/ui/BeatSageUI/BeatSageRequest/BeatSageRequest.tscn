@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bhp4pu5svcgug"]
 
-[ext_resource type="Script" path="res://game/ui/BeatSageUI/BeatSageRequest/BeatSageRequest.gd" id="1"]
+[ext_resource type="Script" uid="uid://i31y3agc7ner" path="res://game/ui/BeatSageUI/BeatSageRequest/BeatSageRequest.gd" id="1"]
 
 [node name="BeatSageRequest" type="Node"]
 script = ExtResource("1")

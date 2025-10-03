@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://cbutfawaljce6" path="res://game/BlackWhiteThem.tres" id="1"]
 [ext_resource type="PackedScene" uid="uid://btf734vme0j3t" path="res://game/ui/MapDownloadPanel/MapSourceButton.tscn" id="2"]
 [ext_resource type="Texture2D" uid="uid://dycn47j2d352k" path="res://game/ui/BeatSaverPanel/beatsaver_icon.png" id="3"]
-[ext_resource type="Script" path="res://game/ui/MapDownloadPanel/MapDownloadPanel.gd" id="4"]
+[ext_resource type="Script" uid="uid://o2oxqritxnll" path="res://game/ui/MapDownloadPanel/MapDownloadPanel.gd" id="4"]
 [ext_resource type="Texture2D" uid="uid://bmetc7xglkymg" path="res://game/ui/BeatSageUI/beat_sage_icon.png" id="5"]
 
 [node name="MapDownloadPanel" type="Panel"]

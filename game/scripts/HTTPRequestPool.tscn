@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://chg13dcum75og"]
 
-[ext_resource type="Script" path="res://game/scripts/HTTPRequestPool.gd" id="1"]
+[ext_resource type="Script" uid="uid://b3ul8orpuvdoo" path="res://game/scripts/HTTPRequestPool.gd" id="1"]
 
 [node name="HTTPRequestPool" type="Node"]
 script = ExtResource("1")

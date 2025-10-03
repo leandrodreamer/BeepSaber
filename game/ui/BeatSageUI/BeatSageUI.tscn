@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bmdbiqndkvcm6"]
 
 [ext_resource type="Theme" uid="uid://cbutfawaljce6" path="res://game/BlackWhiteThem.tres" id="1"]
-[ext_resource type="Script" path="res://game/ui/BeatSageUI/BeatSageUI.gd" id="2"]
+[ext_resource type="Script" uid="uid://cnq7opnsiyrgb" path="res://game/ui/BeatSageUI/BeatSageUI.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://6slr1heu84vp" path="res://game/ui/YouTubeUI/youtube_icon.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://bmetc7xglkymg" path="res://game/ui/BeatSageUI/beat_sage_icon.png" id="4"]
 [ext_resource type="PackedScene" uid="uid://bhp4pu5svcgug" path="res://game/ui/BeatSageUI/BeatSageRequest/BeatSageRequest.tscn" id="5"]

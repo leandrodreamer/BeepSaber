@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://iiatb07725bg"]
 
-[ext_resource type="Script" path="res://game/SpectatorWindow.gd" id="1_s3dpd"]
-[ext_resource type="Script" path="res://game/PercentIndicator.gd" id="3_be825"]
-[ext_resource type="Shader" path="res://game/PercentIndicator.gdshader" id="4_a2ftq"]
+[ext_resource type="Script" uid="uid://dyiousbd7vvuq" path="res://game/SpectatorWindow.gd" id="1_s3dpd"]
+[ext_resource type="Script" uid="uid://bn24emgv1l4us" path="res://game/PercentIndicator.gd" id="3_be825"]
+[ext_resource type="Shader" uid="uid://bkt21vetmleqj" path="res://game/PercentIndicator.gdshader" id="4_a2ftq"]
 [ext_resource type="Material" uid="uid://dqox51k4cngtf" path="res://game/Text.material" id="4_ometx"]
 
 [sub_resource type="TextMesh" id="TextMesh_shlsn"]

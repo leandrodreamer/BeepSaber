@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cbbovki8xp6e2"]
 
-[ext_resource type="Script" path="res://OQ_Toolkit/OQ_Helpers/scripts/OQ_SplashScreen.gd" id="1_meqqt"]
+[ext_resource type="Script" uid="uid://3ium20ifccdh" path="res://OQ_Toolkit/OQ_Helpers/scripts/OQ_SplashScreen.gd" id="1_meqqt"]
 [ext_resource type="Texture2D" uid="uid://b5s50pauu6qn0" path="res://OQ_Toolkit/OQ_UI2D/theme/godot_splash_512.png" id="3_c1vqr"]
 [ext_resource type="Texture2D" uid="uid://cviyxvrpvyr0g" path="res://game/data/beepsaber_logo.png" id="4_1hvip"]
 [ext_resource type="PackedScene" uid="uid://d04fmtjhjx4oy" path="res://OQ_Toolkit/OQ_UI2D/OQ_UI2DLabel.tscn" id="5_fmmjf"]

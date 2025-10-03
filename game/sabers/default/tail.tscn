@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://buhdimf18mwbo"]
 
-[ext_resource type="Script" path="res://game/sabers/default/tail.gd" id="1_mawj2"]
+[ext_resource type="Script" uid="uid://b8yca2giq6yxo" path="res://game/sabers/default/tail.gd" id="1_mawj2"]
 
 [sub_resource type="Gradient" id="Gradient_1mbrl"]
 offsets = PackedFloat32Array(0, 0.234483, 1)

@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://cb8ftj7lpxrfy"]
 
 [ext_resource type="Theme" uid="uid://cbutfawaljce6" path="res://game/BlackWhiteThem.tres" id="1"]
-[ext_resource type="Script" path="res://game/ui/YouTubeUI/YouTubeUI.gd" id="2"]
+[ext_resource type="Script" uid="uid://s0bi7wrqafvy" path="res://game/ui/YouTubeUI/YouTubeUI.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://bw1m0m5qftnsb" path="res://game/ui/YouTubeUI/YouTubeAPI/YouTubeAPI.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://chg13dcum75og" path="res://game/scripts/HTTPRequestPool.tscn" id="4"]
 [ext_resource type="Texture2D" uid="uid://6slr1heu84vp" path="res://game/ui/YouTubeUI/youtube_icon.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://cxvyqmtckg782" path="res://game/ui/YouTubeUI/default_thumbnail.png" id="6"]
-[ext_resource type="Script" path="res://game/vr_slider.gd" id="7"]
+[ext_resource type="Script" uid="uid://0wxhm6egkj0g" path="res://game/vr_slider.gd" id="7"]
 
 [node name="YouTubeUI" type="Panel"]
 offset_right = 1536.0

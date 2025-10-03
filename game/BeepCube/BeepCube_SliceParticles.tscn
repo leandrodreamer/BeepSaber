@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cplhsipk6vhem"]
 
-[ext_resource type="Script" path="res://game/BeepCube/BeepCube_SliceParticles.gd" id="1"]
+[ext_resource type="Script" uid="uid://bo1cckpnwkac" path="res://game/BeepCube/BeepCube_SliceParticles.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cg6kwny2mi3wq" path="res://game/data/gradient.png" id="2_87b8h"]
 
 [sub_resource type="Gradient" id="Gradient_g4n6q"]

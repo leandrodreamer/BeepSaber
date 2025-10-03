@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cj71atwq2eow8"]
 
 [ext_resource type="Theme" path="res://game/data/beep_saber.theme" id="1"]
-[ext_resource type="Script" path="res://game/ui/NameSelector/NameSelector.gd" id="2"]
+[ext_resource type="Script" uid="uid://dxhyr5iwridpr" path="res://game/ui/NameSelector/NameSelector.gd" id="2"]
 
 [node name="NameSelector" type="Control"]
 clip_contents = true
