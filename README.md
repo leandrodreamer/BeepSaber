@@ -1,5 +1,5 @@
 # Open Saber VR
-This is a fork of [Beep Saber by NeoSpark314](https://github.com/NeoSpark314/BeepSaber) ported to Godot 4.3 and OpenXR (WIP)
+This is a fork of [Beep Saber by NeoSpark314](https://github.com/NeoSpark314/BeepSaber) ported to Godot 4.5 and OpenXR (WIP)
 (The OQ Toolkit is only partially ported/patched for it to work on Godot 4 with OpenXR, most features that are not used in this project will not work)
 
 This fork tries to improve the experience and make it more of it's own game instead of just a demo.
@@ -18,7 +18,7 @@ this stand alone version was forked so that it can be changed and developed inde
 ![screenshot02](doc/images/OS0.4.0_2.gif)
 ![screenshot03](doc/images/OS0.4.0_3.gif)
 # About the implementation
-This game uses godot 4.3. The implementation supports to load and play maps from [BeatSaver](https://beatsaver.com/).
+This game uses godot 4.5. The implementation supports to load and play maps from [BeatSaver](https://beatsaver.com/).
 To export for android headsets the godot openxr vendors plugin may be needed
 
 There is one demo song included that is part of the deployed package.
