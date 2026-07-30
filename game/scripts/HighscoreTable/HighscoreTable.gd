@@ -2,7 +2,7 @@ extends Node
 class_name HighscoreTable
 
 # location to store the highscores on filesystem
-const HIGHSCORES_FILEPATH := "user://highscores.json"
+var HIGHSCORES_FILEPATH := Constants.CONFIG_ROOT_PATH + "highscores.json"
 
 # maximum records to store in each song's record table. once list
 # grows past this length, the lowest ranking score will get bumped.
@@ -40,8 +40,53 @@ func remove_map(map_info: MapInfo) -> void:
 	
 # returns true if score is a new highscore in the table, false otherwise
 func is_new_highscore(map_info: MapInfo, diff_rank: int, score: int) -> bool:
+	if score == 0:
+		return false
 	var hs_key := map_info.get_key()
-	return _is_new_highscore(hs_key, diff_rank, score)
+	return _is_new_highscore(hs_key, get_rank_key(diff_rank), score)
+	
+static func get_rank_key(diff_rank: int) -> int:
+	diff_rank &= Constants.DIFFICULTY_MASK
+	if Settings.health_mode:
+		diff_rank |= Constants.DIFFICULTY_HEALTH
+	if Settings.arrows_enabled:
+		diff_rank |= Constants.DIFFICULTY_ARROWS
+	if Settings.bombs_enabled:
+		diff_rank |= Constants.DIFFICULTY_BOMBS
+	if Settings.claws:
+		diff_rank |= Constants.DIFFICULTY_CLAWS
+	diff_rank = diff_rank & ~Constants.DIFFICULTY_WIDTH_MASK
+	for i in range(Constants.WIDTHS.size()):
+		if Settings.width == Constants.WIDTHS[i][0]:
+			diff_rank |= Constants.WIDTHS[i][2]
+	diff_rank = diff_rank & ~Constants.DIFFICULTY_SPEED_MASK
+	for i in range(Constants.SPEEDS.size()):
+		if Settings.music_speed == Constants.SPEEDS[i][0]:
+			diff_rank |= Constants.SPEEDS[i][2]
+	diff_rank = diff_rank & ~Constants.DIFFICULTY_FLIP_MASK
+	diff_rank |= Settings.flip << Constants.DIFFICULTY_FLIP_SHIFT
+	diff_rank = diff_rank & ~Constants.DIFFICULTY_HANDEDNESS_MASK
+	if Settings.handedness == Constants.HANDEDNESS_FORCE_LEFT:
+		diff_rank |= Constants.DIFFICULTY_HANDEDNESS_FORCE_LEFT
+	elif Settings.handedness == Constants.HANDEDNESS_FORCE_RIGHT:
+		diff_rank |= Constants.DIFFICULTY_HANDEDNESS_FORCE_RIGHT
+	elif Settings.handedness == Constants.HANDEDNESS_IGNORE:
+		diff_rank |= Constants.DIFFICULTY_HANDEDNESS_IGNORE
+	return diff_rank
+	
+static func get_width_from_rank(diff_rank: int) -> int:
+	var wr := diff_rank & Constants.DIFFICULTY_WIDTH_MASK
+	for ww in Constants.WIDTHS:
+		if ww[2] == wr:
+			return ww[0]
+	return 100
+	
+static func get_speed_from_rank(diff_rank: int) -> int:
+	var sr := diff_rank & Constants.DIFFICULTY_SPEED_MASK
+	for ss in Constants.SPEEDS:
+		if ss[2] == sr:
+			return ss[0]
+	return 100
 	
 # adds a new score record to the table. if the score is not a highscore
 # then the record will not be stored.
@@ -52,9 +97,10 @@ func is_new_highscore(map_info: MapInfo, diff_rank: int, score: int) -> bool:
 # score : integer score to store
 #
 # return : None
-func add_highscore(map_info: MapInfo, diff_rank: int ,player_name: String, score: int) -> void:
+func add_highscore(map_info: MapInfo, diff_rank: int, player_name: String, score: int) -> void:
 	# get existing records for song + difficulty
 	var hs_key := map_info.get_key()
+	diff_rank = get_rank_key(diff_rank)
 	var records := _get_records(hs_key,diff_rank)
 	
 	# construct a new record and resort the list
@@ -82,7 +128,7 @@ func get_records(map_info: MapInfo, diff_rank: int) -> Array:
 # returned if no record exist for this song yet
 func get_highscore(map_info: MapInfo, diff_rank: int) -> int:
 	var hs_key := map_info.get_key()
-	var records := _get_records(hs_key,diff_rank)
+	var records := _get_records(hs_key,get_rank_key(diff_rank))
 	if records.size() == 0:
 		return -1
 	else:

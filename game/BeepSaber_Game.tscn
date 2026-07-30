@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dqb3ybvpsfcbw"]
+[gd_scene format=3 uid="uid://dqb3ybvpsfcbw"]
 
 [ext_resource type="PackedScene" uid="uid://cs8e62lsifik5" path="res://game/floor.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://d04fmtjhjx4oy" path="res://OQ_Toolkit/OQ_UI2D/OQ_UI2DLabel.tscn" id="2"]
@@ -6,16 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://iglrdadxsqw4" path="res://game/Wall/Wall.tscn" id="3_73652"]
 [ext_resource type="PackedScene" uid="uid://iiatb07725bg" path="res://game/SpectatorWindow.tscn" id="6_g42ih"]
 [ext_resource type="PackedScene" uid="uid://b08nwxm66uyir" path="res://game/vr_goggles.glb" id="7_e6irq"]
-[ext_resource type="Script" path="res://game/scripts/BeepSaberController.gd" id="8_5lcn1"]
-[ext_resource type="Shader" path="res://game/vr_goggles.gdshader" id="8_7x23q"]
-[ext_resource type="Script" path="res://game/BeepSaber_Game.gd" id="9"]
+[ext_resource type="Script" uid="uid://cy4001h8jxcs8" path="res://game/scripts/BeepSaberController.gd" id="8_5lcn1"]
+[ext_resource type="Shader" uid="uid://ck4o32tlsnvoh" path="res://game/vr_goggles.gdshader" id="8_7x23q"]
+[ext_resource type="Script" uid="uid://b5caopw03s26u" path="res://game/BeepSaber_Game.gd" id="9"]
 [ext_resource type="PackedScene" uid="uid://n1wrym3osxb8" path="res://game/LightSaber.tscn" id="10"]
 [ext_resource type="PackedScene" uid="uid://glii0poslcve" path="res://game/BeepSaberMainMenu.tscn" id="11"]
 [ext_resource type="PackedScene" uid="uid://cisgyiarwaf2i" path="res://game/scripts/UIRaycast/UIRaycast.tscn" id="12"]
 [ext_resource type="PackedScene" uid="uid://qjvg3reomvyk" path="res://game/event_driver.tscn" id="13"]
 [ext_resource type="Material" uid="uid://dqox51k4cngtf" path="res://game/Text.material" id="13_3xkki"]
 [ext_resource type="Sky" uid="uid://byunh6ley5hib" path="res://game/background_sky.tres" id="14"]
-[ext_resource type="Shader" path="res://game/PercentIndicator.gdshader" id="14_155do"]
+[ext_resource type="Shader" uid="uid://helcw6glra46" path="res://game/PercentIndicator.gdshader" id="14_155do"]
 [ext_resource type="PackedScene" uid="uid://63fr72w7kh2w" path="res://game/PercentIndicator.tscn" id="16"]
 [ext_resource type="PackedScene" uid="uid://f53k0dxxtenr" path="res://game/Pause_Panel.tscn" id="18"]
 [ext_resource type="PackedScene" uid="uid://biylg2wsontn3" path="res://game/settings_Panel.tscn" id="19"]
@@ -30,9 +30,8 @@
 [ext_resource type="PackedScene" uid="uid://cjirr6sfxfhhd" path="res://game/scripts/ScenePool/ScenePool.tscn" id="27"]
 [ext_resource type="PackedScene" uid="uid://dkqqtux44xxe7" path="res://game/ui/MapDownloadPanel/MapDownloadPanel.tscn" id="28"]
 [ext_resource type="PackedScene" uid="uid://bmdbiqndkvcm6" path="res://game/ui/BeatSageUI/BeatSageUI.tscn" id="29"]
-[ext_resource type="PackedScene" uid="uid://cbbovki8xp6e2" path="res://game/GodotSplash.tscn" id="29_vrn2v"]
 [ext_resource type="PackedScene" uid="uid://cgfj82g2xp1ne" path="res://OQ_Toolkit/OQ_UI2D/OQ_UI2DLogWindow.tscn" id="31"]
-[ext_resource type="Script" path="res://game/scripts/SongUploader/song_uploader.gd" id="33_l0uxg"]
+[ext_resource type="Script" uid="uid://cnh3j4w1c5ulx" path="res://game/scripts/SongUploader/song_uploader.gd" id="33_l0uxg"]
 [ext_resource type="PackedScene" uid="uid://dvj8dorx2l7s0" path="res://game/BeepCube/BeepCube.tscn" id="33_nc705"]
 [ext_resource type="PackedScene" uid="uid://b62c3hkjmky75" path="res://game/Chain/ChainLink.tscn" id="34_tsovg"]
 
@@ -48,7 +47,6 @@ glow_enabled = true
 glow_intensity = 1.63
 glow_strength = 0.83
 glow_bloom = 0.03
-glow_blend_mode = 1
 glow_hdr_threshold = 1.04
 fog_density = 0.0015
 
@@ -69,231 +67,267 @@ shader_parameter/right_color = Color(0, 0, 1, 1)
 
 [sub_resource type="TextMesh" id="TextMesh_cx1im"]
 text = "x 0
-Combo 000"
-font_size = 6
-horizontal_alignment = 0
+Combo 1"
+font_size = 10
 vertical_alignment = 0
 depth = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wa4gh"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.588235)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qk53l"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.313726)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_b2wmm"]
+material = SubResource("StandardMaterial3D_qk53l")
+size = Vector2(0.55, 0.336)
+orientation = 2
 
 [sub_resource type="TextMesh" id="TextMesh_0bbpk"]
-text = "Score: 000000"
-font_size = 6
+text = "Score: 000000
+Time: 00:00"
+font_size = 10
 vertical_alignment = 0
 depth = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6dld2"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_4xldb"]
+material = SubResource("StandardMaterial3D_qk53l")
+size = Vector2(0.75, 0.854)
+orientation = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rsu5u"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("14_155do")
+shader_parameter/color = Vector3(0, 0, 0)
 shader_parameter/how_full = 0.75
 
 [sub_resource type="QuadMesh" id="QuadMesh_02xdc"]
 size = Vector2(0.5, 0.5)
 
-[node name="BeepSaber" type="Node3D" groups=["main_game"]]
+[node name="BeepSaber" type="Node3D" unique_id=1067199737 groups=["main_game"]]
 script = ExtResource("9")
 
-[node name="GodotSplash" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("29_vrn2v")]
-camera = NodePath("../XROrigin3D/XRCamera3D")
-
-[node name="pre_renderer" type="Node3D" parent="."]
+[node name="pre_renderer" type="Node3D" parent="." unique_id=315838595]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00581, -5.78464)
 visible = false
 
-[node name="Bomb" parent="pre_renderer" instance=ExtResource("24")]
+[node name="Bomb" parent="pre_renderer" unique_id=1788547459 instance=ExtResource("24")]
 
-[node name="Wall" parent="pre_renderer" instance=ExtResource("3_73652")]
+[node name="Wall" parent="pre_renderer" unique_id=1817560074 instance=ExtResource("3_73652")]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." groups=["enviroment"]]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=788330933 groups=["enviroment"]]
 environment = SubResource("1")
 
-[node name="SongPlayer" type="AudioStreamPlayer" parent="."]
+[node name="SongPlayer" type="AudioStreamPlayer" parent="." unique_id=1023394952]
 bus = &"Music"
 playback_type = 1
 
-[node name="SpectatorWindow" parent="." instance=ExtResource("6_g42ih")]
+[node name="SpectatorWindow" parent="." unique_id=669742120 instance=ExtResource("6_g42ih")]
 
-[node name="XROrigin3D" type="XROrigin3D" parent="."]
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=933153918]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 
-[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=283916164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 cull_mask = 1
 far = 1024.0
 
-[node name="PlayerHead" type="Area3D" parent="XROrigin3D/XRCamera3D"]
+[node name="PlayerHead" type="Area3D" parent="XROrigin3D/XRCamera3D" unique_id=1302596388]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/XRCamera3D/PlayerHead"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/XRCamera3D/PlayerHead" unique_id=14071239]
 shape = SubResource("2")
 
-[node name="DebugInfoLabel" type="MeshInstance3D" parent="XROrigin3D/XRCamera3D/PlayerHead"]
+[node name="DebugInfoLabel" type="MeshInstance3D" parent="XROrigin3D/XRCamera3D/PlayerHead" unique_id=19174199]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.778996, 0.48322, -1.51666)
 material_override = ExtResource("13_3xkki")
 mesh = SubResource("TextMesh_p7n0m")
 
-[node name="VRGoggles" parent="XROrigin3D/XRCamera3D" instance=ExtResource("7_e6irq")]
+[node name="VRGoggles" parent="XROrigin3D/XRCamera3D" unique_id=2054355306 instance=ExtResource("7_e6irq")]
 layers = 2
 material_override = SubResource("ShaderMaterial_0pkk4")
 
-[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+[node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1280202714]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 1.5, -0.5)
 tracker = &"left_hand"
+pose = &"aim"
 script = ExtResource("8_5lcn1")
 
-[node name="LeftLightSaber" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("song_player_ref") instance=ExtResource("10")]
+[node name="LeftLightSaber" parent="XROrigin3D/LeftController" unique_id=1997736227 node_paths=PackedStringArray("song_player_ref") instance=ExtResource("10")]
 song_player_ref = NodePath("../../../SongPlayer")
 
-[node name="UIRaycast" parent="XROrigin3D/LeftController/LeftLightSaber" node_paths=PackedStringArray("controller") instance=ExtResource("12")]
+[node name="UIRaycast" parent="XROrigin3D/LeftController/LeftLightSaber" unique_id=1534991990 node_paths=PackedStringArray("controller") instance=ExtResource("12")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 active = false
 ui_raycast_length = 5.0
 controller = NodePath("../..")
 
-[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+[node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=771868762]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.5, -0.5)
 tracker = &"right_hand"
+pose = &"aim"
+show_when_tracked = true
 script = ExtResource("8_5lcn1")
 
-[node name="RightLightSaber" parent="XROrigin3D/RightController" node_paths=PackedStringArray("song_player_ref") instance=ExtResource("10")]
+[node name="RightLightSaber" parent="XROrigin3D/RightController" unique_id=276359046 node_paths=PackedStringArray("song_player_ref") instance=ExtResource("10")]
 type = 1
 song_player_ref = NodePath("../../../SongPlayer")
 
-[node name="UIRaycast" parent="XROrigin3D/RightController/RightLightSaber" node_paths=PackedStringArray("controller") instance=ExtResource("12")]
+[node name="UIRaycast" parent="XROrigin3D/RightController/RightLightSaber" unique_id=1294339549 node_paths=PackedStringArray("controller") instance=ExtResource("12")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 ui_raycast_length = 5.0
 controller = NodePath("../..")
 
-[node name="Track" type="Node3D" parent="."]
+[node name="Track" type="Node3D" parent="." unique_id=1912445022]
 
-[node name="StandingGround" parent="." instance=ExtResource("1")]
+[node name="StandingGround" parent="." unique_id=1068306328 instance=ExtResource("1")]
 
-[node name="event_driver" parent="." instance=ExtResource("13")]
+[node name="event_driver" parent="." unique_id=593257630 instance=ExtResource("13")]
 
-[node name="MainMenu_OQ_UI2DCanvas" parent="." instance=ExtResource("3")]
+[node name="MainMenu_OQ_UI2DCanvas" parent="." unique_id=2127950165 instance=ExtResource("3")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1.5, -1)
 
-[node name="BeepSaberMainMenu" parent="MainMenu_OQ_UI2DCanvas" node_paths=PackedStringArray("main_song_player_ref", "keyboard", "beepsaber_game", "song_uploader_ref") instance=ExtResource("11")]
+[node name="BeepSaberMainMenu" parent="MainMenu_OQ_UI2DCanvas" unique_id=231069898 node_paths=PackedStringArray("main_song_player_ref", "keyboard", "beepsaber_game", "song_uploader_ref") instance=ExtResource("11")]
 main_song_player_ref = NodePath("../../SongPlayer")
 keyboard = NodePath("../../Keyboard_highscore")
 beepsaber_game = NodePath("../..")
 song_uploader_ref = NodePath("../../SongUploader")
 
-[node name="Multiplier_Label" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 1.375, -2.5)
+[node name="Multiplier_Label" type="MeshInstance3D" parent="." unique_id=1751030463]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.375, -2.5)
 material_override = ExtResource("13_3xkki")
 mesh = SubResource("TextMesh_cx1im")
 skeleton = NodePath("")
 
-[node name="Point_Label" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.375, -2.5)
+[node name="Text_Background" type="MeshInstance3D" parent="Multiplier_Label" unique_id=1141689755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, -0.01)
+visible = false
+material_override = SubResource("StandardMaterial3D_wa4gh")
+mesh = SubResource("PlaneMesh_b2wmm")
+skeleton = NodePath("")
+
+[node name="Point_Label" type="MeshInstance3D" parent="." unique_id=107044941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.54, -2.5)
 material_override = ExtResource("13_3xkki")
 mesh = SubResource("TextMesh_0bbpk")
 skeleton = NodePath("")
 
-[node name="Percent_Indicator" parent="." instance=ExtResource("16")]
+[node name="Text_Background2" type="MeshInstance3D" parent="Point_Label" unique_id=230528431]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.419, -0.01)
+visible = false
+material_override = SubResource("StandardMaterial3D_wa4gh")
+mesh = SubResource("PlaneMesh_4xldb")
+skeleton = NodePath("")
+
+[node name="Percent_Indicator" parent="." unique_id=1987737042 instance=ExtResource("16")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1, -2.5)
-material_override = SubResource("ShaderMaterial_6dld2")
+material_override = SubResource("ShaderMaterial_rsu5u")
 mesh = SubResource("QuadMesh_02xdc")
 
-[node name="EndScore" parent="." instance=ExtResource("20_fgfws")]
+[node name="EndScore" parent="." unique_id=675269165 instance=ExtResource("20_fgfws")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60386, -0.777581)
 layers = 3
 
-[node name="PauseMenu_canvas" parent="." instance=ExtResource("3")]
+[node name="PauseMenu_canvas" parent="." unique_id=733509686 instance=ExtResource("3")]
 transform = Transform3D(1.86849, 0, 0, 0, 1.86849, 0, 0, 0, 1.86849, 0, 1.43532, -0.756856)
 visible = false
 
-[node name="Pause_Panel" parent="PauseMenu_canvas" instance=ExtResource("18")]
+[node name="Pause_Panel" parent="PauseMenu_canvas" unique_id=1084204812 instance=ExtResource("18")]
 
-[node name="Pause_countdown" parent="." instance=ExtResource("2")]
+[node name="Pause_countdown" parent="." unique_id=459181070 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49382, -0.649511)
 visible = false
 text = "3"
 font_size_multiplier = 4.587
 
-[node name="Settings_canvas" parent="." instance=ExtResource("3")]
+[node name="Settings_canvas" parent="." unique_id=1444993032 instance=ExtResource("3")]
 transform = Transform3D(2.3178, 0, 0, 0, 2.3178, 0, 0, 0, 2.3178, 0, 1.5, -1)
 visible = false
 
-[node name="settings_Panel" parent="Settings_canvas" node_paths=PackedStringArray("beepsaber_game") instance=ExtResource("19")]
+[node name="settings_Panel" parent="Settings_canvas" unique_id=1568178862 node_paths=PackedStringArray("beepsaber_game") instance=ExtResource("19")]
 beepsaber_game = NodePath("../..")
 
-[node name="OQ_UI2DLogWindow" parent="Settings_canvas" instance=ExtResource("31")]
+[node name="OQ_UI2DLogWindow" parent="Settings_canvas" unique_id=544892911 instance=ExtResource("31")]
 transform = Transform3D(0.373265, 0, 0, 0, 0.323257, 0.186633, 0, -0.186633, 0.323257, 0, -0.407229, 0.0410669)
 
-[node name="MapSourceDialogs" type="Node3D" parent="."]
+[node name="MapSourceDialogs" type="Node3D" parent="." unique_id=522587209]
 transform = Transform3D(0.346575, 0, -0.938022, 0, 1, 0, 0.938022, 0, 0.346575, 2.43, 1.498, 0.468)
 
-[node name="MapDownload_Canvas" parent="MapSourceDialogs" instance=ExtResource("3")]
+[node name="MapDownload_Canvas" parent="MapSourceDialogs" unique_id=1041831894 instance=ExtResource("3")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
-[node name="MapDownloadPanel" parent="MapSourceDialogs/MapDownload_Canvas" node_paths=PackedStringArray("beat_saver_panel", "beat_sage_panel") instance=ExtResource("28")]
+[node name="MapDownloadPanel" parent="MapSourceDialogs/MapDownload_Canvas" unique_id=1071474997 node_paths=PackedStringArray("beat_saver_panel", "beat_sage_panel") instance=ExtResource("28")]
 beat_saver_panel = NodePath("../../BeatSaver_Canvas/BeatSaverPanel")
 beat_sage_panel = NodePath("../../BeatSage_Canvas/BeatSageUI")
 
-[node name="BeatSaver_Canvas" parent="MapSourceDialogs" instance=ExtResource("3")]
+[node name="BeatSaver_Canvas" parent="MapSourceDialogs" unique_id=1832345664 instance=ExtResource("3")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 visible = false
 
-[node name="BeatSaverPanel" parent="MapSourceDialogs/BeatSaver_Canvas" node_paths=PackedStringArray("main_menu_ref", "keyboard") instance=ExtResource("20")]
+[node name="BeatSaverPanel" parent="MapSourceDialogs/BeatSaver_Canvas" unique_id=187967703 node_paths=PackedStringArray("main_menu_ref", "keyboard") instance=ExtResource("20")]
 main_menu_ref = NodePath("../../../MainMenu_OQ_UI2DCanvas/BeepSaberMainMenu")
 keyboard = NodePath("../../../Keyboard_online_search")
 
-[node name="BeatSage_Canvas" parent="MapSourceDialogs" instance=ExtResource("3")]
+[node name="BeatSage_Canvas" parent="MapSourceDialogs" unique_id=1559135146 instance=ExtResource("3")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 visible = false
 
-[node name="BeatSageUI" parent="MapSourceDialogs/BeatSage_Canvas" instance=ExtResource("29")]
+[node name="BeatSageUI" parent="MapSourceDialogs/BeatSage_Canvas" unique_id=720995097 instance=ExtResource("29")]
 
-[node name="YouTube_Canvas" parent="MapSourceDialogs" instance=ExtResource("3")]
+[node name="YouTube_Canvas" parent="MapSourceDialogs" unique_id=1975419147 instance=ExtResource("3")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0.01)
 visible = false
 
-[node name="YouTubeUI" parent="MapSourceDialogs/YouTube_Canvas" node_paths=PackedStringArray("keyboard") instance=ExtResource("26")]
+[node name="YouTubeUI" parent="MapSourceDialogs/YouTube_Canvas" unique_id=629036710 node_paths=PackedStringArray("keyboard") instance=ExtResource("26")]
 keyboard = NodePath("../../../Keyboard_online_search")
 
-[node name="Keyboard_online_search" parent="." instance=ExtResource("21")]
+[node name="Keyboard_online_search" parent="." unique_id=789403462 instance=ExtResource("21")]
 transform = Transform3D(0.838233, 0.349429, -2.22632, 0, 2.37535, 0.372819, 2.25358, -0.129972, 0.828095, 2.09772, 0.833935, 0.302276)
 visible = false
 
-[node name="Points_label_driver" parent="." instance=ExtResource("22")]
+[node name="Points_label_driver" parent="." unique_id=1605321739 instance=ExtResource("22")]
 
-[node name="Highscores_Canvas" parent="." instance=ExtResource("3")]
+[node name="Highscores_Canvas" parent="." unique_id=1636266647 instance=ExtResource("3")]
 transform = Transform3D(1, 0, 1.73205, 0, 2, 0, -1.73205, 0, 1, -2.29734, 1.42321, -0.236991)
 
-[node name="HighscorePanel" parent="Highscores_Canvas" instance=ExtResource("23")]
+[node name="HighscorePanel" parent="Highscores_Canvas" unique_id=1748596360 instance=ExtResource("23")]
 offset_right = 752.0
 show_close_button = false
 show_song_info = false
 
-[node name="NameSelector_Canvas" parent="." instance=ExtResource("3")]
+[node name="NameSelector_Canvas" parent="." unique_id=559579113 instance=ExtResource("3")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.980611, -0.747554)
 visible = false
 update_only_on_input = false
 
-[node name="NameSelector" parent="NameSelector_Canvas" instance=ExtResource("25")]
+[node name="NameSelector" parent="NameSelector_Canvas" unique_id=615429950 instance=ExtResource("25")]
 mouse_filter = 1
 
-[node name="BeepCubePool" parent="." instance=ExtResource("27")]
+[node name="BeepCubePool" parent="." unique_id=834836976 instance=ExtResource("27")]
 scene = ExtResource("33_nc705")
 
-[node name="ChainLinkPool" parent="." instance=ExtResource("27")]
+[node name="ChainLinkPool" parent="." unique_id=1976978925 instance=ExtResource("27")]
 scene = ExtResource("34_tsovg")
 
-[node name="Keyboard_highscore" parent="." instance=ExtResource("21")]
+[node name="Keyboard_highscore" parent="." unique_id=1086552033 instance=ExtResource("21")]
 transform = Transform3D(2.40442, 0, 0, 0, 2.37659, 0.364816, 0, -0.364816, 2.37659, -0.00735812, 0.350501, -0.67319)
 visible = false
 cancelable = false
 min_chars_to_enable_enter = 1
 is_name_input = true
 
-[node name="SongUploader" type="Node" parent="." node_paths=PackedStringArray("main_menu_ref")]
+[node name="SongUploader" type="Node" parent="." unique_id=1190851273 node_paths=PackedStringArray("main_menu_ref")]
 script = ExtResource("33_l0uxg")
 main_menu_ref = NodePath("../MainMenu_OQ_UI2DCanvas/BeepSaberMainMenu")
 
 [connection signal="finished" from="SongPlayer" to="." method="_on_song_ended"]
 [connection signal="area_entered" from="XROrigin3D/XRCamera3D/PlayerHead" to="." method="_on_PlayerHead_area_entered"]
 [connection signal="area_exited" from="XROrigin3D/XRCamera3D/PlayerHead" to="." method="_on_PlayerHead_area_exited"]
+[connection signal="profile_changed" from="XROrigin3D/LeftController" to="." method="_on_left_controller_profile_changed"]
+[connection signal="button_pressed" from="XROrigin3D/RightController" to="." method="_on_right_controller_button_pressed"]
+[connection signal="profile_changed" from="XROrigin3D/RightController" to="." method="_on_right_controller_profile_changed"]
 [connection signal="difficulty_changed" from="MainMenu_OQ_UI2DCanvas/BeepSaberMainMenu" to="." method="_on_BeepSaberMainMenu_difficulty_changed"]
 [connection signal="settings_requested" from="MainMenu_OQ_UI2DCanvas/BeepSaberMainMenu" to="." method="_settings_button"]
 [connection signal="start_map" from="MainMenu_OQ_UI2DCanvas/BeepSaberMainMenu" to="." method="start_map"]

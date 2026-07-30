@@ -10,7 +10,7 @@ class BeatSaverSongInfo extends RefCounted:
 	var duration: float
 	var versions: Array
 	var uploader_id: int
-	
+
 	func _init(song_info: Dictionary) -> void:
 		name = Utils.get_str(song_info, "name", "")
 		description = Utils.get_str(song_info, "description", "")
@@ -61,6 +61,10 @@ var prev_request: BeatSaverRequest
 
 @export var keyboard: OQ_UI2DKeyboard
 
+func on_song_list_changed() -> void:
+	for item_index in range(0, item_list.item_count):
+		item_list.set_item_disabled(item_index,main_menu_ref.all_song_hashes.has(item_list.get_item_metadata(item_index)))
+
 func _ready() -> void:
 	UI_AudioEngine.attach_children(self)
 	($back as Button).visible = false
@@ -84,6 +88,8 @@ func _ready() -> void:
 			(parent_canvas as OQ_UI2DCanvas).visibility_changed.connect(_on_BeatSaverPanel_visibility_changed)
 			break
 		parent_canvas = parent_canvas.get_parent()
+
+	main_menu_ref.song_list_changed.connect(on_song_list_changed)
 
 # override hide() method to handle case where UI is inside a OQ_UI2DCanvas
 func _hide() -> void:
@@ -174,6 +180,9 @@ func _on_HTTPRequest_request_completed(result: int, _response_code: int, _header
 						var tooltip := "Map author: %s" % parsed_song.level_author_name
 						item_list.set_item_tooltip(index, tooltip)
 						song_data.append(parsed_song)
+						item_list.set_item_disabled(index, main_menu_ref.all_song_hashes.has(parsed_song.versions[0]["hash"]))
+						item_list.set_item_metadata(index, parsed_song.versions[0]["hash"])
+
 	else:
 		vr.log_error("request error "+str(result))
 	mode_button.disabled = false
@@ -227,7 +236,8 @@ Difficulties:%s
 	
 	($TextureRect as TextureRect).texture = item_list.get_item_icon(index)
 
-	httppreviewdownload.request(version['previewURL'])
+	if Settings.audio_master > 0 and Settings.audio_music_preview > 0:
+		httppreviewdownload.request(version['previewURL'])
 
 func _on_download_button_up() -> void:
 	OS.request_permissions()
@@ -235,6 +245,7 @@ func _on_download_button_up() -> void:
 	var version_info = song_data[item_selected].versions[0]
 	downloading.insert(downloading.size(),[song_data[item_selected].name,version_info])
 	download_next()
+	item_list.set_item_disabled(item_selected, true)
 
 func download_next() -> void:
 	if downloading.size() > 0:
@@ -249,6 +260,7 @@ func _on_HTTPRequest_download_completed(result: int, response_code: int, headers
 	if result == 0:
 		var has_error := false
 		var tempdir := Constants.APPDATA_PATH+"temp"
+		DirAccess.remove_absolute(tempdir)
 		var error := DirAccess.make_dir_recursive_absolute(tempdir)
 		if error != OK: 
 			vr.log_error(
@@ -256,9 +268,10 @@ func _on_HTTPRequest_download_completed(result: int, response_code: int, headers
 				"Failed to create temp directory '%s'" % tempdir)
 			has_error = true
 		
-		# sanitize path separators from song directory name
-		var song_dir_name: String = downloading[0][0].replace('/','')
-		
+		# use hash as song directory, so there are no clashes with the same name or
+		# issues with special characters in names
+		var song_dir_name: String = downloading[0][1]["hash"]
+
 		var zippath := Constants.APPDATA_PATH+"temp/%s.zip"%song_dir_name
 		if not has_error:
 			var file := FileAccess.open(zippath,FileAccess.WRITE)
@@ -271,6 +284,7 @@ func _on_HTTPRequest_download_completed(result: int, response_code: int, headers
 		
 		var song_out_dir := Constants.APPDATA_PATH+("Songs/%s/"%song_dir_name)
 		if not has_error:
+			DirAccess.remove_absolute(song_out_dir)
 			error = DirAccess.make_dir_recursive_absolute(song_out_dir)
 			if error != OK: 
 				vr.log_error(

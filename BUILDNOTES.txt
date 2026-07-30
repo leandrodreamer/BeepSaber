@@ -1,0 +1,4 @@
+Works with Godot 4.6 and the v4 version of the XR Vendors file.
+
+In Godot, do Project > Install Android build template. Then copy 
+android_build_src_main_AndroidManifest.xml to android/build/src/main/AndroidManifest.xml.

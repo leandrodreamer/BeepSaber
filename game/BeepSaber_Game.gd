@@ -5,8 +5,7 @@
 extends Node3D
 class_name BeepSaber_Game
 
-var version := "0.5.0"
-
+var version : String = ProjectSettings.get_setting("application/config/version", "0.0.0")
 var gamestate_bootup := GameState.new()
 var gamestate_mapcomplete := GameStateMapComplete.new()
 var gamestate_mapselection := GameStateMapSelection.new()
@@ -15,6 +14,7 @@ var gamestate_paused := GameStatePaused.new()
 var gamestate_playing := GameStatePlaying.new()
 var gamestate_settings := GameStateSettings.new()
 var gamestate: GameState = gamestate_bootup
+var current_health := Constants.HEALTH_START
 
 @onready var xr_origin := $XROrigin3D as XROrigin3D
 @onready var left_controller := $XROrigin3D/LeftController as BeepSaberController
@@ -75,36 +75,72 @@ var _in_wall := false
 var pause_position := 0.0
 
 func start_map(info: MapInfo, map_difficulty: DifficultyInfo) -> void:
-	var map_filename := info.filepath + map_difficulty.beatmap_filename
-	var map_data := vr.load_json_file(map_filename)
+	var map_data := Utils.binary_to_json(Utils.read_binary_file(info.filepath, map_difficulty.beatmap_filename))
 	
-	if (map_data == null):
-		vr.log_error("Could not read map data from " + map_filename)
+	if (map_data.is_empty()):
+		vr.log_error("Could not read map data from " + info.filepath + "/" + map_difficulty.beatmap_filename)
 	if not Map.load_beatmap(info, map_difficulty, map_data):
 		return
+		
+	event_driver.set_background_texture()
 	
 	update_left_color(Map.color_left)
 	update_right_color(Map.color_right)
+	event_driver.set_background()
+	
 	if Map.event_stack.is_empty():
 		event_driver.set_all_on(Map.color_left, Map.color_right)
 	else:
 		event_driver.set_all_off()
 	
-	vr.log_info("loading: " + info.filepath + info.song_filename)
-	song_player.stream = AudioStreamOggVorbis.load_from_file(info.filepath + info.song_filename)
+	var filename := info.filepath + info.song_filename
+	vr.log_info("loading: " + filename)
+	if FileAccess.file_exists(filename):
+		song_player.stream = AudioStreamOggVorbis.load_from_file(filename)
+	else:
+		var audio_data : PackedByteArray
+		audio_data = Utils.read_binary_file(info.filepath, info.song_filename)
+		if len(audio_data) > 0:
+			song_player.stream = AudioStreamOggVorbis.load_from_buffer(audio_data)
+		else:
+			vr.log_info("playing silence")
+			var wav := AudioStreamWAV.new()
+			wav.set_stereo(false)
+			wav.set_format(AudioStreamWAV.FORMAT_8_BITS)
+			wav.set_mix_rate(11025)
+			var length := ceili((Map.current_info.get_length_seconds() + 2) * wav.mix_rate)
+			var data := PackedByteArray()
+			data.resize(length) 
+			data.fill(0)
+			wav.set_data(data)
+			song_player.stream = wav
 	
 	_audio_synced_after_restart = false
 	song_player.play(0.0)
 	song_player.volume_db = 0.0
+	song_player.pitch_scale = Settings.music_speed / 100.
 	_in_wall = false
 	Scoreboard.restart()
 	
 	_display_points()
 	percent_indicator.start_map()
+	percent_indicator.set_health_mode(Settings.health_mode)
+	if Settings.health_mode:
+		current_health = Constants.HEALTH_START
+		percent_indicator.update_percent(current_health / Constants.HEALTH_MAX)
 	
 	_clear_track()
 	_transition_game_state(gamestate_playing)
 
+func update_health(delta: float) -> void:
+	if Settings.health_mode:
+		current_health += delta
+		if current_health > Constants.HEALTH_MAX:
+			current_health = Constants.HEALTH_MAX
+		percent_indicator.update_percent(current_health / Constants.HEALTH_MAX)
+		if current_health < 0:
+			_on_song_ended()
+			
 # This function will transitioning the game from it's current state into
 # the provided 'next_state'.
 func _transition_game_state(next_state: GameState) -> void:
@@ -139,6 +175,9 @@ func _check_and_update_saber(controller: BeepSaberController, saber: LightSaber)
 		and (not saber._anim.is_playing())):
 		if (saber.is_extended()): saber._hide()
 		else: saber._show()
+		
+	if _in_wall:
+		Scoreboard.enter_wall()
 	
 	# check for saber rumble (only when extended and not already rumbling)
 	# this check is necessary to not overwrite a rumble set from somewhere else
@@ -146,7 +185,7 @@ func _check_and_update_saber(controller: BeepSaberController, saber: LightSaber)
 	if not controller.is_simple_rumbling(): 
 		if _in_wall:
 			# weak rumble on both controllers when player is inside wall
-			controller.simple_rumble(0.1, 0.1)
+			controller.simple_rumble(0.3, 0.3)
 		elif saber.get_overlapping_areas().size() > 0 or saber.get_overlapping_bodies().size() > 0:
 			# strong rumble when saber is cutting into wall or other saber
 			controller.simple_rumble(0.5, 0.1)
@@ -155,6 +194,8 @@ func _check_and_update_saber(controller: BeepSaberController, saber: LightSaber)
 
 
 func _physics_process(_dt: float) -> void:
+	Scoreboard.score_changed.emit()
+	
 	if debug_info_label.visible:
 		var dbg_text := "FPS: %d\nCube Pool: %d free of %d\nLink Pool: %d free of %d" % [
 			Engine.get_frames_per_second(),
@@ -188,6 +229,8 @@ func _ready() -> void:
 		right_controller
 	)
 	
+	vr.pose_recentered.connect(recenter)
+
 	debug_info_label.visible = Settings.show_debug_info
 	set_colors_from_settings()
 	($WorldEnvironment as WorldEnvironment).environment.glow_enabled = Settings.glare
@@ -212,18 +255,37 @@ func _ready() -> void:
 	await get_tree().process_frame
 	($pre_renderer as Node3D).queue_free()
 	
+	set_background_texture()
+	
 	recenter()
 
+func set_background_texture() -> void:
+	var environment : Environment = $WorldEnvironment.environment
+	var panorama : PanoramaSkyMaterial = environment.sky.sky_material 
+	panorama.panorama = load(Settings.background_texture)	
+	
 func on_settings_changed(key: StringName) -> void:
 	# ensures proper initialization of tree for proper first frame setting loading
 	await get_tree().process_frame
 	match key:
+		&"left_handed":
+			if Settings.left_handed:
+				left_ui_raycast.active = true
+				right_ui_raycast.active = false
+			else:
+				left_ui_raycast.active = false
+				right_ui_raycast.active = true
 		&"color_left":
 			update_left_color(Settings.color_left)
 		&"color_right":
 			update_right_color(Settings.color_right)
-		&"events":
-			disable_events(not Settings.events)
+		&"width":
+			event_driver.set_background()
+		&"background":
+			event_driver.set_background()
+		&"background_texture":
+			set_background_texture()
+			event_driver.set_background_texture()
 		&"show_debug_info":
 			debug_info_label.visible = Settings.show_debug_info
 		&"glare":
@@ -234,6 +296,7 @@ func on_settings_changed(key: StringName) -> void:
 func set_colors_from_settings() -> void:
 	update_left_color(Settings.color_left)
 	update_right_color(Settings.color_right)
+	event_driver.set_background()
 
 func update_left_color(color: Color) -> void:
 	if !left_saber:
@@ -255,13 +318,6 @@ func update_right_color(color: Color) -> void:
 	event_driver.update_right_color(color)
 	standing_ground.update_right_color(color)
 
-func disable_events(disabled: bool) -> void:
-	event_driver.disabled = disabled
-	if disabled:
-		event_driver.set_all_off()
-	else:
-		event_driver.set_all_on(Settings.color_left, Settings.color_right)
-
 func _clear_track() -> void:
 	for c in track.get_children():
 		if c.has_method("clear_from_track"):
@@ -277,9 +333,22 @@ func _display_points() -> void:
 	else:
 		hit_rate = 1.0
 	
-	(point_label.mesh as TextMesh).text = "Score: %6d" % Scoreboard.points
-	(multiplier_label.mesh as TextMesh).text = "x %d\nCombo %d" % [Scoreboard.multiplier, Scoreboard.combo]
-	percent_indicator.update_percent(hit_rate)
+	var minutes = 0
+	var seconds = 0
+	if Map.current_info != null:
+		var time_left = Map.current_info.get_length_seconds() - get_current_time()
+		if time_left < 0:
+			time_left = 0
+		minutes = int(time_left) / 60
+		seconds = int(time_left) % 60
+	var display = "Score %6d\n%02d:%02d" % [Scoreboard.points,minutes,seconds]
+	if (point_label.mesh as TextMesh).text != display:
+		(point_label.mesh as TextMesh).text = display
+	display = "x %d\nCombo %d" % [Scoreboard.multiplier, Scoreboard.combo]
+	if (multiplier_label.mesh as TextMesh).text != display:
+		(multiplier_label.mesh as TextMesh).text = display
+	if not Settings.health_mode:
+		percent_indicator.update_percent(hit_rate)
 
 # accessor method for the player name selector UI element
 func _name_selector() -> NameSelector:
@@ -289,11 +358,16 @@ func _on_PlayerHead_area_entered(area: Area3D) -> void:
 	if area.is_in_group(&"wall"):
 		song_player.volume_db = -15.0
 		_in_wall = true
+		Scoreboard.enter_wall()
 
 func _on_PlayerHead_area_exited(area: Area3D) -> void:
 	if area.is_in_group(&"wall"):
 		song_player.volume_db = 0.0
 		_in_wall = false
+		Scoreboard.exit_wall()
+		
+func get_current_time() -> float:
+	return song_player.get_playback_position()
 
 # when the song ended we want to display the current score and
 # the high score
@@ -311,7 +385,11 @@ func _on_song_ended() -> void:
 		highscore = Scoreboard.points
 		new_record = true
 
-	var current_percent := Scoreboard.right_notes/(Scoreboard.right_notes+Scoreboard.wrong_notes)
+	var current_percent : float
+	if Settings.health_mode and current_health <= 0:
+		current_percent = -1
+	else:
+		current_percent = Scoreboard.right_notes/(Scoreboard.right_notes+Scoreboard.wrong_notes) 
 	endscore.show_score(
 		Scoreboard.points,
 		highscore,
@@ -319,7 +397,7 @@ func _on_song_ended() -> void:
 		"%s By %s\n%s     Map author: %s" % [
 			Map.current_info.song_name,
 			Map.current_info.song_author_name,
-			Map.current_difficulty.custom_name,
+			Map.current_difficulty.get_display_name(),
 			Map.current_info.level_author_name],
 		Scoreboard.full_combo,
 		new_record
@@ -356,6 +434,11 @@ func _unpause_button() -> void:
 	_transition_game_state(gamestate_playing)
 
 func _on_BeepSaberMainMenu_difficulty_changed(map_info: MapInfo, diff_rank: int) -> void:
+	if diff_rank < 0:
+		if highscore_canvas:
+			highscore_canvas.hide()
+		return
+		
 	# menu loads playlist in _ready(), must yield until scene is loaded
 	if not highscore_canvas:
 		await self.ready
@@ -364,6 +447,7 @@ func _on_BeepSaberMainMenu_difficulty_changed(map_info: MapInfo, diff_rank: int)
 	highscore_panel.load_highscores(map_info,diff_rank)
 
 func _settings_button() -> void:
+	settings_panel._update_backgrounds()
 	_transition_game_state(gamestate_settings)
 
 func _on_settings_Panel_apply() -> void:
@@ -392,3 +476,24 @@ func recenter():
 	var xr_camera := $XROrigin3D/XRCamera3D as XRCamera3D
 	xr_origin.rotation.y -= xr_camera.global_rotation.y
 	xr_origin.position -= (xr_camera.global_position * Vector3(1,0,1)) - Vector3(0,0,1)
+
+func _set_hand(right: bool, hand: bool) -> void:
+	var angle_offset := -45. if hand else 0.
+	if right:
+		right_saber.second_extra_offset_rot.x=angle_offset
+		right_saber._update_size_and_angle()
+	else:
+		left_saber.second_extra_offset_rot.x=angle_offset
+		left_saber._update_size_and_angle()
+
+func _on_right_controller_profile_changed(role: String) -> void:
+	if role.ends_with("/simple_controller"):
+		_set_hand(true, true)
+	else:
+		_set_hand(true, false)
+
+func _on_left_controller_profile_changed(role: String) -> void:
+	if role.ends_with("/simple_controller"):
+		_set_hand(false, true)
+	else:
+		_set_hand(false, false)

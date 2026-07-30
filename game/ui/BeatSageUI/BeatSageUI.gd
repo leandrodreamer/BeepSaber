@@ -36,8 +36,8 @@ const MODELS := {
 }
 
 # TODO move these to a shared constants location
-const BS_TEMP_DIR := "user://BeepSaber/temp/"
-const BS_SONG_DIR := "user://BeepSaber/Songs/"
+static var BS_TEMP_DIR := Constants.APPDATA_PATH + "temp/" 
+static var BS_SONG_DIR := Constants.APPDATA_PATH + "Songs/"
 
 func _ready() -> void:
 	UI_AudioEngine.attach_children(self)

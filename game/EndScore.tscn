@@ -1421,7 +1421,7 @@ offset_bottom = 256.0
 theme = SubResource("Theme_553gf")
 theme_override_font_sizes/normal_font_size = 160
 bbcode_enabled = true
-text = "[center][rainbow freq=0.5 sat=0.7 val=2]S"
+text = "[center][rainbow freq=0.5 sat=0.7 val=2]A+"
 autowrap_mode = 0
 
 [node name="RaycastArea" type="Area3D" parent="."]

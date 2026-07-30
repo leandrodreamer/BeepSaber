@@ -2,6 +2,8 @@
 # It contains all the glue code and helper functions to make individual features work together.
 extends Node
 
+signal pose_recentered
+
 const UI_PIXELS_TO_METER := 1.0 / 1024 # defines the (auto) size of UI elements in 3D
 
 var toolkit_version := "0.4.3_dev"
@@ -172,6 +174,9 @@ var _active_scene_path: String # this assumes that only a single scene will ever
 var webxr_initializer: CanvasLayer
 var xr_interface: XRInterface
 
+func _on_openxr_pose_recentered() -> void:
+	emit_signal("pose_recentered")
+
 func initialize(origin: XROrigin3D, camera: XRCamera3D, left_hand: BeepSaberController, right_hand: BeepSaberController,
 	render_scale: float = 1.0) -> void:
 	_init_vr_log()
@@ -200,12 +205,17 @@ func initialize(origin: XROrigin3D, camera: XRCamera3D, left_hand: BeepSaberCont
 					xr_interface.set_display_refresh_rate(max_fps as float)
 					Engine.set_physics_ticks_per_second(max_fps as int)
 		
+		
 		# Turn off v-sync!
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-		
+
+		xr_interface.pose_recentered.connect(_on_openxr_pose_recentered)
+
 		# Change our main viewport to output to the HMD
 		get_viewport().use_xr = true
 		inVR = true
+		MixedReality.set_mixed_reality(Settings.mixed_reality)
+
 	else:
 		log_info("OpenXR not initialized, please check if your headset is connected")
 		inVR = false

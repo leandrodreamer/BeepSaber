@@ -9,6 +9,8 @@ var by := false
 var by_last_frame := false
 var trigger := false
 var trigger_last_frame := false
+var menu := false
+var menu_last_frame := false
 
 var movement_aabb := AABB()
 
@@ -20,6 +22,15 @@ func ax_just_pressed() -> bool:
 
 func ax_just_released() -> bool:
 	return ax_last_frame and not ax
+
+func menu_pressed() -> bool:
+	return menu
+
+func menu_just_pressed() -> bool:
+	return menu and not menu_last_frame
+
+func menu_just_released() -> bool:
+	return menu_last_frame and not menu
 
 func by_pressed() -> bool:
 	return by
@@ -42,10 +53,12 @@ func trigger_just_released() -> bool:
 func _update_buttons_and_sticks() -> void:
 	ax_last_frame = ax
 	by_last_frame = by
+	menu_last_frame = menu
 	trigger_last_frame = trigger
 	ax = is_button_pressed(&"ax_button")
 	by = is_button_pressed(&"by_button")
-	trigger = is_button_pressed(&"trigger")
+	trigger = is_button_pressed(&"trigger") or is_button_pressed(&"select_button")
+	menu = is_button_pressed(&"menu_button")
 
 func _update_movement_aabb() -> void:
 	movement_aabb = movement_aabb.expand(global_transform.origin)

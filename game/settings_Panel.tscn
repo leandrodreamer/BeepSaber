@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://biylg2wsontn3"]
 
 [ext_resource type="FontFile" uid="uid://01k27lk2a4bw" path="res://OQ_Toolkit/OQ_UI2D/theme/RobotoMono-Medium.ttf" id="1"]
-[ext_resource type="Script" path="res://game/settings_Panel.gd" id="2"]
+[ext_resource type="Script" uid="uid://cpwy2bk3ecxqb" path="res://game/settings_Panel.gd" id="2"]
 [ext_resource type="FontFile" uid="uid://cdsnr8tscm8y6" path="res://OQ_Toolkit/OQ_UI2D/theme/Roboto-Medium.ttf" id="3"]
 [ext_resource type="PackedScene" uid="uid://dtipmx5ep1dkk" path="res://game/vr_slider.tscn" id="4"]
 
@@ -202,8 +202,8 @@ cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 [sub_resource type="Theme" id="7"]
 default_font = SubResource("6")
 
-[sub_resource type="StyleBoxFlat" id="8"]
-bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+[sub_resource type="StyleBoxFlat" id="10"]
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
@@ -218,8 +218,8 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="10"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="8"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
@@ -228,12 +228,13 @@ border_color = Color(1, 1, 1, 1)
 
 [node name="settings_Panel" type="Panel"]
 offset_right = 896.0
-offset_bottom = 576.0
+offset_bottom = 656.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("1")
 script = ExtResource("2")
 
 [node name="settings" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -251,7 +252,7 @@ text = "Settings
 "
 
 [node name="note" type="Label" parent="."]
-layout_mode = 2
+layout_mode = 0
 offset_left = 27.0
 offset_top = 36.0
 offset_right = 859.0
@@ -266,7 +267,7 @@ layout_mode = 0
 offset_left = 27.0
 offset_top = 54.0
 offset_right = 867.0
-offset_bottom = 481.0
+offset_bottom = 561.0
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
@@ -322,10 +323,28 @@ size_flags_horizontal = 3
 [node name="music_label" type="Label" parent="ScrollContainer/VBox/audio/music"]
 layout_mode = 2
 theme = SubResource("3")
-text = "Music
-"
+text = "Music"
 
 [node name="music_slider" type="HSlider" parent="ScrollContainer/VBox/audio/music"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.01
+value = 0.8
+tick_count = 2
+ticks_on_borders = true
+
+[node name="music_preview" type="VBoxContainer" parent="ScrollContainer/VBox/audio"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="music_preview_label" type="Label" parent="ScrollContainer/VBox/audio/music_preview"]
+layout_mode = 2
+theme = SubResource("3")
+text = "Music Preview"
+
+[node name="music_preview_slider" type="HSlider" parent="ScrollContainer/VBox/audio/music_preview"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -338,12 +357,6 @@ ticks_on_borders = true
 [node name="recenter" type="Button" parent="ScrollContainer/VBox"]
 layout_mode = 2
 text = "Recenter"
-
-[node name="d_background" type="CheckButton" parent="ScrollContainer/VBox"]
-layout_mode = 2
-tooltip_text = "Low Performance impact*"
-theme = SubResource("3")
-text = "*Dynamic Background: "
 
 [node name="cut_blocks" type="CheckButton" parent="ScrollContainer/VBox"]
 layout_mode = 2
@@ -363,20 +376,42 @@ tooltip_text = "High Performance impact*"
 theme = SubResource("3")
 text = "*Saber Tail: "
 
-[node name="show_debug" type="CheckButton" parent="ScrollContainer/VBox"]
+[node name="background_mode_grid" type="GridContainer" parent="ScrollContainer/VBox"]
 layout_mode = 2
-theme = SubResource("3")
-text = "Show Debug Info:"
+columns = 2
 
-[node name="show_collisions" type="CheckButton" parent="ScrollContainer/VBox"]
+[node name="Label" type="Label" parent="ScrollContainer/VBox/background_mode_grid"]
 layout_mode = 2
-theme = SubResource("3")
-text = "Show Collision Shapes:"
+text = "Background Mode:"
 
-[node name="bombs_enabled" type="CheckButton" parent="ScrollContainer/VBox"]
+[node name="background_mode" type="OptionButton" parent="ScrollContainer/VBox/background_mode_grid"]
+layout_mode = 2
+
+[node name="background_texture_grid" type="GridContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/background_texture_grid"]
+layout_mode = 2
+text = "Background Image:"
+
+[node name="background_texture" type="OptionButton" parent="ScrollContainer/VBox/background_texture_grid"]
+layout_mode = 2
+
+[node name="mixed_reality" type="CheckButton" parent="ScrollContainer/VBox"]
 layout_mode = 2
 theme = SubResource("3")
-text = "Bombs Enabled:"
+text = "Mixed Reality:"
+
+[node name="explain" type="CheckButton" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme = SubResource("3")
+text = "Explain Scores:"
+
+[node name="left_handed" type="CheckButton" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme = SubResource("3")
+text = "Left-Handed"
 
 [node name="SaberThicknessRow" type="HBoxContainer" parent="ScrollContainer/VBox"]
 layout_mode = 2
@@ -423,7 +458,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Left saber"
 flat = true
-color = Color(1, 0.101961, 0.101961, 1)
+color = Color(0.101961, 0.101961, 1, 1)
 edit_alpha = false
 
 [node name="right_saber_col" type="ColorPickerButton" parent="ScrollContainer/VBox/SaberColorsRow"]
@@ -431,7 +466,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Right saber"
 flat = true
-color = Color(0.101961, 0.101961, 1, 1)
+color = Color(1, 0.101961, 0.101961, 1)
 edit_alpha = false
 
 [node name="UI_VolumeRow" type="HBoxContainer" parent="ScrollContainer/VBox"]
@@ -590,6 +625,26 @@ layout_mode = 2
 theme = SubResource("3")
 text = "Ignore Map's Colors:"
 
+[node name="not_music_dl" type="CheckButton" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme = SubResource("3")
+text = "Omit Music from Map Download/Upload:"
+
+[node name="swing_scoring" type="CheckButton" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme = SubResource("3")
+text = "Score by Swing and Distance:"
+
+[node name="show_collisions" type="CheckButton" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme = SubResource("3")
+text = "Show Collision Shapes:"
+
+[node name="show_debug" type="CheckButton" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme = SubResource("3")
+text = "Show Debug Info:"
+
 [node name="spectator_view" type="CheckButton" parent="ScrollContainer/VBox"]
 layout_mode = 2
 tooltip_text = "High Performance impact*"
@@ -604,26 +659,26 @@ text = "Spectator HUD:"
 
 [node name="defaults" type="Button" parent="."]
 layout_mode = 0
-offset_left = 546.283
-offset_top = 496.0
+offset_left = 526.283
+offset_top = 596.0
 offset_right = 692.283
-offset_bottom = 556.0
+offset_bottom = 636.0
 theme = SubResource("7")
-theme_override_styles/hover = SubResource("8")
-theme_override_styles/pressed = SubResource("9")
 theme_override_styles/normal = SubResource("10")
+theme_override_styles/pressed = SubResource("9")
+theme_override_styles/hover = SubResource("8")
 text = "Default"
 
 [node name="apply" type="Button" parent="."]
 layout_mode = 0
 offset_left = 719.136
-offset_top = 496.0
+offset_top = 596.0
 offset_right = 865.136
-offset_bottom = 556.0
+offset_bottom = 636.0
 theme = SubResource("7")
-theme_override_styles/hover = SubResource("8")
-theme_override_styles/pressed = SubResource("9")
 theme_override_styles/normal = SubResource("10")
+theme_override_styles/pressed = SubResource("9")
+theme_override_styles/hover = SubResource("8")
 text = "Apply"
 
 [node name="vr_slider" parent="." instance=ExtResource("4")]
@@ -632,18 +687,20 @@ scroll_node_path = NodePath("../ScrollContainer")
 [connection signal="value_changed" from="ScrollContainer/VBox/audio/master/master_slider" to="." method="_on_master_slider_value_changed"]
 [connection signal="value_changed" from="ScrollContainer/VBox/audio/sfx/sfx_slider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="value_changed" from="ScrollContainer/VBox/audio/music/music_slider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="ScrollContainer/VBox/audio/music_preview/music_preview_slider" to="." method="_on_music_preview_slider_value_changed"]
 [connection signal="button_up" from="ScrollContainer/VBox/recenter" to="." method="_on_recenter_button_up"]
-[connection signal="toggled" from="ScrollContainer/VBox/d_background" to="." method="_on_d_background_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBox/cut_blocks" to="." method="_on_cut_blocks_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBox/glare" to="." method="_on_glare_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBox/saber_tail" to="." method="_on_saber_tail_toggled"]
-[connection signal="toggled" from="ScrollContainer/VBox/show_debug" to="." method="_on_show_debug_toggled"]
-[connection signal="toggled" from="ScrollContainer/VBox/show_collisions" to="." method="_on_show_collisions_toggled"]
-[connection signal="toggled" from="ScrollContainer/VBox/bombs_enabled" to="." method="_on_bombs_enabled_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBox/mixed_reality" to="." method="_on_mixed_reality_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBox/explain" to="." method="_on_explain_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBox/left_handed" to="." method="_on_left_handed_toggled"]
 [connection signal="value_changed" from="ScrollContainer/VBox/SaberThicknessRow/saber_thickness" to="." method="_on_thickness_value_changed"]
 [connection signal="item_selected" from="ScrollContainer/VBox/SaberTypeRow/saber" to="." method="_on_saber_item_selected"]
 [connection signal="color_changed" from="ScrollContainer/VBox/SaberColorsRow/left_saber_col" to="." method="_on_left_saber_color_changed"]
+[connection signal="pressed" from="ScrollContainer/VBox/SaberColorsRow/left_saber_col" to="." method="_on_left_saber_col_pressed"]
 [connection signal="color_changed" from="ScrollContainer/VBox/SaberColorsRow/right_saber_col" to="." method="_on_right_saber_color_changed"]
+[connection signal="pressed" from="ScrollContainer/VBox/SaberColorsRow/right_saber_col" to="." method="_on_right_saber_col_pressed"]
 [connection signal="value_changed" from="ScrollContainer/VBox/UI_VolumeRow/ui_volume_slider" to="." method="_on_ui_volume_slider_value_changed"]
 [connection signal="value_changed" from="ScrollContainer/VBox/left_saber_offset/posx" to="." method="_on_left_saber_pos_x_changed"]
 [connection signal="value_changed" from="ScrollContainer/VBox/left_saber_offset/posy" to="." method="_on_left_saber_pos_y_changed"]
@@ -659,6 +716,10 @@ scroll_node_path = NodePath("../ScrollContainer")
 [connection signal="value_changed" from="ScrollContainer/VBox/right_saber_offset/rotz" to="." method="_on_right_saber_rot_z_changed"]
 [connection signal="value_changed" from="ScrollContainer/VBox/player_height_offset/pos" to="." method="_on_player_height_offset_changed"]
 [connection signal="toggled" from="ScrollContainer/VBox/disable_map_color" to="." method="_on_disable_map_color_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBox/not_music_dl" to="." method="_on_not_music_dl_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBox/swing_scoring" to="." method="_on_swing_scoring_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBox/show_collisions" to="." method="_on_show_collisions_toggled"]
+[connection signal="toggled" from="ScrollContainer/VBox/show_debug" to="." method="_on_show_debug_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBox/spectator_view" to="." method="_on_spectator_view_toggled"]
 [connection signal="toggled" from="ScrollContainer/VBox/spectator_hud" to="." method="_on_spectator_hud_toggled"]
 [connection signal="button_up" from="defaults" to="." method="_restore_defaults"]

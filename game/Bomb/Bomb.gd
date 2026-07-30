@@ -8,8 +8,8 @@ func set_collision_disabled(value: bool) -> void:
 	collision_shape.disabled = value
 
 @warning_ignore("unused_parameter")
-func cut(saber_type: int, cut_speed: Vector3, cut_plane: Plane, controller: BeepSaberController) -> void:
-	Scoreboard.bad_cut(transform.origin)
+func cut(saber: LightSaber, cut_speed: Vector3, cut_plane: Plane, controller: BeepSaberController) -> void:
+	Scoreboard.bad_cut(transform.origin, lane_rotation, "bomb")
 	queue_free()
 
 func on_miss() -> void:
@@ -21,9 +21,11 @@ func spawn(info: BombInfo, current_beat: float) -> void:
 	
 	var distance: float = info.beat - current_beat
 	
-	transform.origin.x = Constants.LANE_DISTANCE * float(info.line_index) + Constants.LANE_ZERO_X
-	transform.origin.y = Constants.LANE_DISTANCE * float(info.line_layer) + Constants.LAYER_ZERO_Y
+	transform.origin.x = Settings.LANE_DISTANCE_X * float(info.line_index) + Settings.LANE_ZERO_X
+	transform.origin.y = Constants.LANE_DISTANCE_Y * float(info.line_layer) + Constants.LAYER_ZERO_Y
 	transform.origin.z = -distance * Constants.BEAT_DISTANCE
+	
+	add_lane_rotation(info.rotation)
 	
 	var anim := $AnimationPlayer as AnimationPlayer
 	var anim_speed := Map.current_difficulty.note_jump_movement_speed / 9.0

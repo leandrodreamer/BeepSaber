@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ccaw6ulq2wr0d"
+uid="uid://cxkq50ssdhpd6"
 path="res://.godot/imported/cube.gltf-751eacd7e77bdd4fd63ce74b755f0d0d.scn"
 
 [deps]
@@ -15,9 +15,12 @@ dest_files=["res://.godot/imported/cube.gltf-751eacd7e77bdd4fd63ce74b755f0d0d.sc
 
 nodes/root_type=""
 nodes/root_name=""
+nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
 meshes/ensure_tangents=true
 meshes/generate_lods=true
 meshes/create_shadow_meshes=true
@@ -31,19 +34,9 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-_subresources={
-"meshes": {
-"cube_mesh": {
-"generate/lightmap_uv": 0,
-"generate/lods": 1,
-"generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
-"save_to_file/enabled": false,
-"save_to_file/make_streamable": "",
-"save_to_file/path": ""
-}
-}
-}
-gltf/naming_version=0
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={}
+gltf/naming_version=1
 gltf/embedded_image_handling=1

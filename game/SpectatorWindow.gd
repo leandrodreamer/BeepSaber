@@ -52,7 +52,7 @@ func on_scoreboard_update() -> void:
 		hit_rate = 1.0
 	
 	(point_label.mesh as TextMesh).text = "Score: %6d" % Scoreboard.points
-	(multiplier_label.mesh as TextMesh).text = " x %d\n Combo %d" % [Scoreboard.multiplier, Scoreboard.combo]
+	(multiplier_label.mesh as TextMesh).text = "x %d\nCombo %d" % [Scoreboard.multiplier, Scoreboard.combo]
 	percent_indicator.update_percent(hit_rate)
 
 func close() -> void:

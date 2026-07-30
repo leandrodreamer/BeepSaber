@@ -268,6 +268,7 @@ func _on_DownloadRequest_request_completed(result: int, response_code: int, head
 	if response_code == HTTPClient.RESPONSE_OK:
 		# store downloaded song data
 		var zippath := download_dir + _zip_filename
+		vr.log_info("downloading "+zippath)
 		var file := FileAccess.open(zippath,FileAccess.WRITE)
 		if file:
 			file.store_buffer(body)

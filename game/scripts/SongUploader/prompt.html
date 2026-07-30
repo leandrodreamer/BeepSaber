@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Open Saber Song Uploader</title>
+	<title>Open Saber Uploader</title>
 	<link rel="stylesheet" href="/style.css" />
 </head>
 <body>
 	<img src="/favicon.ico" />
-	<h1 class="title">Open Saber Song Uploader</h1>
-	<h3 class="title">Upload songs directly into the game's songs folder (must be a zip file)</h3>
+	<h1 class="title">Open Saber Song/Background Uploader</h1>
+	<h3 class="title">Upload songs directly into the game's songs folder (must be a zip file) or backgrounds into the game backgrounds folder (must be a jpeg or png file)</h3>
 	<div class="upload-form">
-		<h3>Upload Song</h3>
+		<h3>Upload</h3>
 		<form action="/" method="post" enctype="multipart/form-data" />
-			<input type="file" name="file" accept=".zip, .ZIP" required />
+			<input type="file" name="file" accept=".zip, .ZIP, .jpg, .jpeg, .png" required />
 			<br /><br />
 			<input type="submit" value="Upload" />
 		</form>

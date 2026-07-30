@@ -22,7 +22,7 @@ func _ready() -> void:
 	look_at_from_position(current_position, camPos, Vector3(0,1,0))
 	
 	($DebugLabel as Node3D).visible = OS.is_debug_build()
-
+	
 var moving := false
 var move_timer := 0.0
 

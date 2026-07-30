@@ -3,14 +3,14 @@ class_name UIRaycast
 
 @export var active := true
 @export var ui_raycast_length := 3.0
-@export var ui_mesh_length := 1.0
+var ui_mesh_length := 1.0
 @export var controller: BeepSaberController
 
 @onready var ui_raycast := $RayCastPosition/RayCast3D as RayCast3D
 @onready var ui_raycast_mesh := $RayCastPosition/RayCastMesh as MeshInstance3D
 @onready var ui_raycast_hitmarker := $RayCastPosition/RayCastHitMarker as MeshInstance3D
 
-var is_colliding := false;
+var is_colliding := false
 var colliding_with: Object = null
 
 
@@ -40,12 +40,23 @@ func _update_raycasts() -> void:
 func _ready() -> void:
 	ui_raycast.set_target_position(Vector3(0, 0, -ui_raycast_length))
 	
+	Settings.changed.connect(on_settings_changed)
+
 	#setup the mesh
-	(ui_raycast_mesh.mesh as BoxMesh).size.z = ui_mesh_length
-	ui_raycast_mesh.position.z = -ui_mesh_length * 0.5
+	update_mesh()
 	
 	ui_raycast_hitmarker.visible = false
 	ui_raycast_mesh.visible = false
+	
+func on_settings_changed(key: StringName) -> void:
+	match key:
+		&"claws":
+			update_mesh()
+
+func update_mesh() -> void:
+	ui_mesh_length = 0.3 if Settings.claws else 1.0
+	(ui_raycast_mesh.mesh as BoxMesh).size.z = ui_mesh_length
+	ui_raycast_mesh.position.z = -ui_mesh_length * 0.5
 
 # we use the physics process here be in sync with the controller position
 func _physics_process(_dt: float) -> void:

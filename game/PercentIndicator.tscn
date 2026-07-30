@@ -8,6 +8,7 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("1_b23qh")
+shader_parameter/color = null
 shader_parameter/how_full = 0.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_02xdc"]

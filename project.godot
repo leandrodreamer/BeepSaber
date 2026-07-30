@@ -8,13 +8,18 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Open Saber"
+config/version="0.7.67"
 run/main_scene="res://game/BeepSaber_Game.tscn"
-config/features=PackedStringArray("4.3")
-boot_splash/bg_color=Color(0, 0, 0, 1)
-boot_splash/image="res://game/data/beepsaber_logo.png"
+config/features=PackedStringArray("4.6")
+boot_splash/bg_color=Color(0, 0, 0, 0)
+boot_splash/image="uid://cviyxvrpvyr0g"
 config/icon="res://icon.png"
 
 [audio]
@@ -25,6 +30,7 @@ buses/default_bus_layout="res://audiobuslayout.tres"
 
 Constants="*res://game/Constants.gd"
 Utils="*res://game/scripts/Utils.gd"
+MixedReality="*res://game/scripts/MixedReality.gd"
 Scoreboard="*res://game/Scoreboard.gd"
 Settings="*res://game/Settings.gd"
 vr="*res://OQ_Toolkit/vr_autoload.gd"
@@ -41,13 +47,14 @@ gdscript/warnings/unsafe_property_access=1
 gdscript/warnings/unsafe_method_access=1
 gdscript/warnings/unsafe_cast=1
 gdscript/warnings/unsafe_call_argument=1
-gdscript/warnings/return_value_discarded=1
+gdscript/warnings/static_called_on_instance=0
 
 [display]
 
 window/size/viewport_width=960
 window/size/viewport_height=540
 window/subwindows/embed_subwindows=false
+window/per_pixel_transparency/allowed=true
 window/vsync/vsync_mode=false
 
 [editor_plugins]
@@ -142,10 +149,10 @@ common/physics_fps=72
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
-shading/overrides/force_vertex_shading.mobile=false
 shading/overrides/force_lambert_over_burley=true
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 environment/defaults/default_environment="res://default_env.tres"
+shading/overrides/force_vertex_shading.mobile=false
 quality/intended_usage/framebuffer_allocation=3
 vram_compression/import_etc=true
 lights_and_shadows/shadow_atlas/size=2048
@@ -171,5 +178,11 @@ right_saber={
 
 openxr/enabled=true
 openxr/reference_space=2
+openxr/environment_blend_mode=0
 openxr/startup_alert=false
+openxr/extensions/hand_tracking=true
 shaders/enabled=true
+openxr/extensions/meta/passthrough=true
+openxr/extensions/meta/color_space=false
+openxr/extensions/meta/composition_layer_settings=false
+openxr/extensions/meta/dynamic_resolution=false

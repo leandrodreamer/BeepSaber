@@ -9,8 +9,26 @@ func _ready(game: BeepSaber_Game) -> void:
 	game.pause_menu._hide()
 	game.highscore_canvas._hide()
 	game.name_selector_canvas._hide()
-	game.left_saber._show()
-	game.right_saber._show()
+	if Settings.handedness == 0:
+		if Map.one_saber:
+			if Settings.left_handed:
+				game.right_saber._hide()
+				game.left_saber._show()
+			else:
+				game.left_saber._hide()
+				game.right_saber._show()
+		else:
+			game.right_saber._show()
+			game.left_saber._show()
+	elif Settings.handedness == Constants.HANDEDNESS_FORCE_LEFT:
+		game.right_saber._hide()
+		game.left_saber._show()
+	elif Settings.handedness == Constants.HANDEDNESS_FORCE_RIGHT:
+		game.right_saber._show()
+		game.left_saber._hide()
+	elif Settings.handedness == Constants.HANDEDNESS_IGNORE:
+		game.right_saber._show()
+		game.left_saber._show()
 	game.multiplier_label.visible = true
 	game.point_label.visible = true
 	game.percent_indicator.visible = true
@@ -24,7 +42,7 @@ func _ready(game: BeepSaber_Game) -> void:
 	Scoreboard.paused = false
 
 func _physics_process(game: BeepSaber_Game) -> void:
-	if game.left_controller.by_just_pressed():
+	if game.left_controller.by_just_pressed() or game.left_controller.menu_just_pressed():
 		game._transition_game_state(game.gamestate_paused)
 	if game._audio_synced_after_restart:
 		_process_map(game)
@@ -78,20 +96,30 @@ func _process_map(game: BeepSaber_Game) -> void:
 		var arc := arc_template.instantiate() as Arc
 		var arc_info := Map.arc_stack.pop_back() as ArcInfo
 		
-		# find starting cube to use as magnet trigger
-		var cube : BeepCube
+		# find starting cube to use as magnet trigger and mark start and end cubes as arc head/tail
+		var head_cube : BeepCube
 		var cube_id := cube_refs.size()-1
+		var have_head := false
+		var have_tail := false
 		while cube_id >= 0:
 			var current_cube : BeepCube = cube_refs[cube_id]
-			if (current_cube.beat == arc_info.head_beat
-				and current_cube.which_saber == arc_info.color
-				):
-					cube = current_cube
-					break
+			if current_cube.which_saber == arc_info.color:
+				if current_cube.beat == arc_info.head_beat:
+					current_cube.set_arc_head()
+					head_cube = current_cube
+					if have_tail:
+						break
+					have_head = true
+				if current_cube.beat == arc_info.tail_beat:
+					current_cube.set_arc_tail()
+					if have_head:
+						break
+					have_tail = true
 			cube_id -= 1
 		
-		arc.spawn(arc_info, current_beat, cube)
-		game.track.add_child(arc)
+		if have_head:
+			arc.spawn(arc_info, current_beat, head_cube)
+			game.track.add_child(arc)
 	
 	while not Map.chain_stack.is_empty() and Map.chain_stack[-1].head_beat <= look_ahead:
 		var chain_info := Map.chain_stack.pop_back() as ChainInfo

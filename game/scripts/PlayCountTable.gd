@@ -2,7 +2,9 @@ extends Node
 class_name PlayCountTable
 
 # location to store the play counts on filesystem
-const PLAY_COUNT_FILEPATH = "user://play_count.json"
+var PLAY_COUNT_FILEPATH := Constants.CONFIG_ROOT_PATH +  "play_count.json"
+const FAVORITE := "favorite"
+const LAST_DIFFICULTY := "last_difficulty"
 
 # internal copy of the play count table
 # restored from user file in _ready()
@@ -46,7 +48,35 @@ func increment_play_count(map_info: MapInfo, diff_rank: int) -> void:
 	
 	key_dict[diff_str] += 1
 	
+	key_dict[LAST_DIFFICULTY] = diff_rank
+	
 	save_table()
+	
+func set_favorite(map_info: MapInfo, favorite: bool) -> void:
+	var song_key := map_info.get_key()
+	var key_dict := Utils.get_dict(_pc_table, song_key, {})
+	if not _pc_table.has(song_key):
+		_pc_table[song_key] = key_dict
+	key_dict[FAVORITE] = favorite
+	save_table()
+
+func is_favorite(map_info: MapInfo) -> bool:
+	var song_key := map_info.get_key()
+	var key_dict := Utils.get_dict(_pc_table, song_key, {})
+	if not _pc_table.has(song_key):
+		return false
+	if not key_dict.has(FAVORITE):
+		return false
+	return key_dict[FAVORITE]
+
+func get_last_difficulty(map_info: MapInfo) -> int:
+	var song_key := map_info.get_key()
+	var key_dict := Utils.get_dict(_pc_table, song_key, {})
+	if not _pc_table.has(song_key):
+		return -1
+	if not key_dict.has(FAVORITE):
+		return -1
+	return key_dict[FAVORITE]
 
 # return : the map's play count for the given difficulty
 func get_play_count(map_info: MapInfo, diff_rank: int) -> int:
@@ -69,8 +99,9 @@ func get_total_play_count(map_info: MapInfo) -> int:
 		return 0
 	
 	var total := 0
-	for count in key_dict.values():
-		total += count
+	for key in key_dict.keys():
+		if key.is_valid_int():
+			total += key_dict[key]
 	return total
 
 # restores play count table from filesystem

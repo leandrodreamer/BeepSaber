@@ -2,7 +2,7 @@
 extends Button
 
 @export var texture : Texture2D
-@export var image_bg_color = Color(0,0,0)
+@export var image_bg_color = Color(0,0,0) # ,0) if Constants.PASSTHROUGH else Color(0,0,0)
 @export var image_margin = 25: set = _set_image_margin
 @export var description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.': set = _set_rich_text
 

@@ -45,7 +45,7 @@ func show_score(score: int, record: int, percent: float, song_string: String, is
 	details_mesh.text = "Your Score:\n%d\n\nRecord:\n%d" % [score,record]
 	
 	if percent >= 0.98:
-		grade_label.text = "[center][rainbow freq=0.5 sat=0.7 val=2]S"
+		grade_label.text = "[center][rainbow freq=0.5 sat=0.7 val=2]A+"
 	elif percent >= 0.90:
 		grade_label.text = "[center]A"
 	elif percent >= 0.80:
@@ -56,18 +56,22 @@ func show_score(score: int, record: int, percent: float, song_string: String, is
 		grade_label.text = "[center]D"
 	elif percent >= 0.50:
 		grade_label.text = "[center]E"
-	else:
+	elif percent >= 0.00:
 		grade_label.text = "[center]F"
+	else:
+		grade_label.text = "[center]F-"
 	
 	var tw := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw.tween_property(self,^"animated_percent",percent,3.0).from(0.0)
-	tw.play()
-	while tw.is_running():
+	if percent >= 0:
+		tw.tween_property(self,^"animated_percent",percent,3.0).from(0.0)
+		tw.play()
+		while tw.is_running():
+			percent_indicator.update_percent(animated_percent)
+			await get_tree().process_frame
+		#_on_Tween_tween_completed()
+		
 		percent_indicator.update_percent(animated_percent)
-		await get_tree().process_frame
-	#_on_Tween_tween_completed()
-	
-	percent_indicator.update_percent(animated_percent)
+
 	tw = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT).set_parallel()
 	tw.tween_property(details_material,^"albedo_color",Color.WHITE,2).from(Color.TRANSPARENT)
 	tw.tween_property(grade_label,^"modulate",Color.WHITE,2).from(Color.TRANSPARENT)

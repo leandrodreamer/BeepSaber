@@ -22,3 +22,4 @@ func _ready(game: BeepSaber_Game) -> void:
 	game.left_saber.set_swingcast_enabled(false)
 	game.right_saber.set_swingcast_enabled(false)
 	game.set_colors_from_settings()
+	game.menu.update_view()

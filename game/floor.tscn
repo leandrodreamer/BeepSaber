@@ -59,7 +59,7 @@ render_target_update_mode = 3
 material = SubResource("CanvasItemMaterial_7a0en")
 offset_right = 512.0
 offset_bottom = 512.0
-color = Color(1, 1, 1, 0.00392157)
+color = Color(1, 1, 1, 0.08)
 
 [node name="burn_l" type="Node2D" parent="SubViewport/ColorRect"]
 position = Vector2(-64, -64)

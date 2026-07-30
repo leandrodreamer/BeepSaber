@@ -72,7 +72,7 @@ _data = {
 "Spawn": SubResource("3")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gk6d3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ju3ro"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_7slj3")
@@ -81,12 +81,14 @@ shader_parameter/metallic = 0.3
 shader_parameter/roughness = 0.2
 shader_parameter/sub_emission_energy = 0.18
 shader_parameter/cutted = false
-shader_parameter/cut_dist_from_center = 0.0
 shader_parameter/cut_vanish = 0.0
-shader_parameter/cut_angle = 0.0
 shader_parameter/cut_white_margin = 0.04
 shader_parameter/is_dot = false
+shader_parameter/arrows_enabled = true
 shader_parameter/is_chain_head = false
+shader_parameter/cut_plane_normal = Vector3(0, 0, 0)
+shader_parameter/cut_plane_dist = 0.0
+shader_parameter/scale = 1.0
 shader_parameter/texture_emission = ExtResource("4_10m2m")
 
 [node name="BeepCube" type="Node3D"]
@@ -116,6 +118,6 @@ libraries = {
 [node name="BeepCubeMesh" parent="." instance=ExtResource("2_sbb11")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 layers = 3
-material_override = SubResource("ShaderMaterial_gk6d3")
+material_override = SubResource("ShaderMaterial_ju3ro")
 
 [node name="SliceParticles" parent="." instance=ExtResource("5_tissj")]

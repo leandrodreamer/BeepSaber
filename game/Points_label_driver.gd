@@ -13,11 +13,10 @@ func _ready():
 		points_label[i] = instance
 		add_child(instance)
 
-
-func show_points(_position: Vector3, value: String):
+func show_points(_position: Vector3, _rotation: float, value: String):
 	if value == "0":
 		value = "x"
 	var color := Color(1,0,0) if value == "x" else Color(1,1,1)
-	points_label[current_point_label].show_points(_position,value,color)
+	points_label[current_point_label].show_points(_position,_rotation,value,color)
 	current_point_label += 1
 	current_point_label %= 4

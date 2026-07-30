@@ -10,6 +10,18 @@ var right_color: Color
 
 @onready var ring_holder := $Level/rings as Node3D
 @onready var diagonal_lasers_holder := $Level/DiagonalLasers as Node3D
+@onready var diagonal_lasers := [
+	$Level/DiagonalLasers/laser1,
+	$Level/DiagonalLasers/laser2,
+	$Level/DiagonalLasers/laser3,
+	$Level/DiagonalLasers/laser4,
+	$Level/DiagonalLasers/laser5,
+	$Level/DiagonalLasers/laser6,
+	$Level/DiagonalLasers/laser7,
+	$Level/DiagonalLasers/laser8,
+	$Level/DiagonalLasers/laser9,
+	$Level/DiagonalLasers/laser10
+]
 @onready var square_lasers_holder := $Level/SquareLasers as Node3D
 @onready var left_waving_lasers_holder := $Level/LeftWavingLasers as Node3D
 @onready var right_waving_lasers_holder := $Level/RightWavingLasers as Node3D
@@ -21,7 +33,11 @@ var right_color: Color
 @onready var left_waving_lasers_material := ($Level/LeftWavingLasers/laser1/Bar7 as MeshInstance3D).material_override as StandardMaterial3D
 @onready var right_waving_lasers_material := ($Level/RightWavingLasers/laser1/Bar7 as MeshInstance3D).material_override as StandardMaterial3D
 @onready var track_lights_material := ($Level/TrackLights/Bar1 as MeshInstance3D).material_override as StandardMaterial3D
+@onready var floor_mesh := ($Level/floor as MeshInstance3D).mesh as PlaneMesh
 @onready var floor_material := ($Level/floor as MeshInstance3D).material_override as StandardMaterial3D
+@onready var track_lights_right := $Level/TrackLights/Bar1 as MeshInstance3D
+@onready var track_lights_left := $Level/TrackLights/Bar2 as MeshInstance3D
+@onready var end_path := $Level/Endpath as MeshInstance3D
 
 @onready var ring_anim_player := $Level/rings/AnimationPlayer as AnimationPlayer
 @onready var left_laser_anim_player := $Level/LeftWavingLasers/AnimationPlayer as AnimationPlayer
@@ -30,7 +46,14 @@ var right_color: Color
 @export var disabled := false
 
 func _ready() -> void:
+	track_lights_holder.hide()
+	
+	set_background_texture()
+	
 	# get_rendering_device() returns null in opengl, meaning this block is skipped in vulkan
+	
+	set_background()
+	
 	if not RenderingServer.get_rendering_device():
 		sphere_material.set_shader_parameter("contrast", 1)
 		for background_side in 5:
@@ -39,6 +62,78 @@ func _ready() -> void:
 				shader_param,
 				(sphere_material.get_shader_parameter(shader_param) as float) * 2.2
 			)
+
+func set_background_texture() -> void:
+	if not Settings.background_texture.begins_with("res:"):
+		var img := Image.new()
+		if OK == img.load(Constants.APPDATA_PATH + "Backgrounds/" + Settings.background_texture):
+			img.flip_x()
+			sphere_material.set_shader_parameter("bg_base", ImageTexture.create_from_image(img))
+			return
+		Settings.background_texture = Settings.default_values["background_texture"]
+	var texture : Resource = null
+	texture = load(Settings.background_texture)
+	sphere_material.set_shader_parameter("bg_base", texture)	
+
+func set_background() -> void:
+	var width_scale := 2 * Settings.LANE_DISTANCE_X / 3.
+	var track_lights_width := track_lights_right.get_aabb().size.x
+	track_lights_right.global_transform.origin.x = track_lights_width / 2 + 2 * Settings.LANE_DISTANCE_X - .01
+	track_lights_left.global_transform.origin.x = -track_lights_right.transform.origin.x
+	end_path.scale.z = track_lights_right.global_transform.origin.x + track_lights_width / 2 - .01
+	floor_mesh.size.y = 4 * Settings.LANE_DISTANCE_X
+	($Level/floor/line1).global_transform.origin.x = Settings.LANE_DISTANCE_X
+	($Level/floor/line2).global_transform.origin.x = -Settings.LANE_DISTANCE_X
+	($Level/floor/line3).global_transform.origin.x = 2 * Settings.LANE_DISTANCE_X
+	($Level/floor/line4).global_transform.origin.x = -2 * Settings.LANE_DISTANCE_X
+	($Level/floor).scale.z = 1
+	for laser in diagonal_lasers:
+		laser.transform.origin.x = 4.5 * width_scale * sign(laser.transform.origin.x)
+	
+	if Settings.background == "simple":
+		ring_holder.hide()
+		diagonal_lasers_holder.hide()
+		square_lasers_holder.hide()
+		left_waving_lasers_holder.hide()
+		right_waving_lasers_holder.hide()
+		($Level/DiagonalLasers/laser1).hide()
+		($Level/DiagonalLasers/laser2).hide()
+		($Level/DiagonalLasers/laser3).hide()
+		($Level/DiagonalLasers/laser4).hide()
+		($Level/DiagonalLasers/laser5).hide()
+		($Level/DiagonalLasers/laser6).hide()
+		($Level/DiagonalLasers/laser7).hide()
+		($Level/DiagonalLasers/laser8).hide()
+		($Level/DiagonalLasers/laser9).hide()
+		($Level/DiagonalLasers/laser10).hide()
+		track_lights_holder.hide()
+		set_all_off()
+		turn_light_on(EventInfo.TYPE_FLOOR_LIGHTS, Color.WHITE)
+		disabled = true
+	else:
+		ring_holder.show()
+		diagonal_lasers_holder.show()
+		square_lasers_holder.show()
+		left_waving_lasers_holder.show()
+		right_waving_lasers_holder.show()
+		($Level/DiagonalLasers/laser1).show()
+		($Level/DiagonalLasers/laser2).show()
+		($Level/DiagonalLasers/laser3).show()
+		($Level/DiagonalLasers/laser4).show()
+		($Level/DiagonalLasers/laser5).show()
+		($Level/DiagonalLasers/laser6).show()
+		($Level/DiagonalLasers/laser7).show()
+		($Level/DiagonalLasers/laser8).show()
+		($Level/DiagonalLasers/laser9).show()
+		($Level/DiagonalLasers/laser10).show()
+		track_lights_holder.hide()
+		if Settings.background == "dynamic":
+			disabled = false
+			set_all_on(Settings.color_left, Settings.color_right)
+		else:
+			disabled = true
+			set_all_off()
+			turn_light_on(EventInfo.TYPE_FLOOR_LIGHTS, Color.WHITE)
 
 func _process(delta: float) -> void:
 	# update the level animations
@@ -155,7 +250,7 @@ func turn_light_off(type: int) -> void:
 			track_lights_holder.visible = false
 			track_lights_material.albedo_color = Color.BLACK
 			floor_material.albedo_color = Color.BLACK
-
+	
 func turn_light_on(type: int, color: Color) -> void:
 	sphere_material.set_shader_parameter("bg_%d_tint"%type, color)
 	stop_prev_tween(type)

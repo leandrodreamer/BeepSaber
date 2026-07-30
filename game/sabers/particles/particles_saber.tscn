@@ -307,9 +307,11 @@ tracks/7/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kyofm"]
 _data = {
 "Hide": SubResource("3"),
+"HideShort": SubResource("3"),
 "QuickHide": SubResource("4"),
 "RESET": SubResource("Animation_y7mm6"),
-"Show": SubResource("5")
+"Show": SubResource("5"),
+"ShowShort": SubResource("5")
 }
 
 [sub_resource type="Gradient" id="Gradient_d20e8"]

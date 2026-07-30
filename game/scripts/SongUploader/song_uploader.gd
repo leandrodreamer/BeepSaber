@@ -5,12 +5,14 @@ class_name SongUploader
 
 var server := TCPServer.new()
 @export var PORT := 45800
-const UPLOAD_DIR := Constants.APPDATA_PATH+"temp/"
+static var UPLOAD_DIR := Constants.APPDATA_PATH+"temp/"
 const CRLF := "\r\n"
 const CRLFCRLF := "\r\n\r\n"
 const GET := "GET "
 
 var active := false
+
+signal changed(name: StringName)
 
 # reference to the main main node (used for playing downloadable song previews)
 @export var main_menu_ref: MainMenu
@@ -121,8 +123,23 @@ static func find_byte_pattern(data: PackedByteArray, pattern: PackedByteArray, s
 		if found:
 			return i
 	return -1
+	
+static func is_zip(file: PackedByteArray) -> bool:
+	if file.size() < 5:
+		return false
+	return file[0] == 0x50 and file[1] == 0x4B and file[2] == 0x03 and file[3] == 0x04
 
-static func handle_post(post_headers: String, post_body: PackedByteArray, content_length: int) -> PackedByteArray:
+static func is_jpg(file: PackedByteArray) -> bool:
+	if file.size() < 4:
+		return false
+	return file[0] == 0xFF and file[1] == 0xD8 and file[2] == 0xFF
+	
+static func is_png(file: PackedByteArray) -> bool:
+	if file.size() < 9:
+		return false
+	return file[0] == 0x89 and file[1] == 0x50 and file[2] == 0x4E and file[3] == 0x47 and file[4] == 0x0D and file[5] == 0x0a and file[6] == 0x1a and file[7] == 0x0a
+
+func handle_post(post_headers: String, post_body: PackedByteArray, content_length: int) -> PackedByteArray:
 	# Find the boundary in the Content-Type header
 	const BOUNDARY_HEADER := "Content-Type: multipart/form-data; boundary="
 	var boundary_match := post_headers.find(BOUNDARY_HEADER)
@@ -146,15 +163,29 @@ static func handle_post(post_headers: String, post_body: PackedByteArray, conten
 	zipfile_end -= CRLF.length()
 	
 	# Extract and save the file content
-	var filename := "UploadedSong-%s"%[hash(post_body)]
+	var filename := "Uploaded-%s"%[hash(post_body)]
 	var file_content := post_body.slice(zipfile_start, zipfile_end)
-	var file := FileAccess.open(UPLOAD_DIR + filename + ".zip", FileAccess.WRITE)
+	var file : FileAccess
+	var ext : String
+	if is_zip(file_content):
+		file = FileAccess.open(Constants.APPDATA_PATH + "Songs/" + filename + ".zip", FileAccess.WRITE)
+		ext = ".zip"
+	elif is_jpg(file_content):
+		file = FileAccess.open(Constants.APPDATA_PATH + "Backgrounds/" + filename + ".jpg", FileAccess.WRITE)
+		ext = ".jpg"
+	elif is_png(file_content):
+		file = FileAccess.open(Constants.APPDATA_PATH + "Backgrounds/" + filename + ".png", FileAccess.WRITE)
+		ext = ".png"
+	else:
+		return make_error_response("Not a zip, jpeg or png")
 	file.store_buffer(file_content)
 	file.close()
+	if ext != ".zip":
+		changed.emit("background_uploaded")
 	
-	var unzipped_dir := unzip_song(filename)
-	if unzipped_dir.is_empty() or DirAccess.get_files_at(unzipped_dir).is_empty():
-		return make_error_response("400 Unable to unzip file")
+#	var unzipped_dir := unzip_song(filename)
+#	if unzipped_dir.is_empty() or DirAccess.get_files_at(unzipped_dir).is_empty():
+#		return make_error_response("400 Unable to unzip file")
 	
 	# Send success response
 	var response_body := """<!DOCTYPE html>
@@ -164,13 +195,16 @@ static func handle_post(post_headers: String, post_body: PackedByteArray, conten
 	<link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-	<h2>Song uploaded successfully!</h2>
-	<h4>The song should appear on the songs list now</h4>
-	<p>Folder Name: %s</p>
+	<h2>File uploaded successfully!</h2>
+	<h4>%s</h4>
+	<p>File Name: %s</p>
 	<p>Size: %d bytes</p>
-	<p><a href="/">Upload another song</a></p>
+	<p><a href="/">Upload another file</a></p>
 </body>
-</html>""" % [filename, file_content.size()]
+</html>""" % [
+	"The song should appear in your list now" if ext==".zip" else 
+	"You can select the background in the Settings",
+	filename+ext, file_content.size()]
 
 	var response_headers := (
 		"HTTP/1.1 200 OK" + CRLF +

@@ -21,6 +21,9 @@ var _mat: ShaderMaterial
 
 var piece_left : CutPiece = null
 var piece_right : CutPiece = null
+var arc_head = false
+var arc_tail = false
+var chain_head = false
 
 func _ready() -> void:
 	_mat = mi.material_override as ShaderMaterial
@@ -43,28 +46,33 @@ func spawn(note_info: ColorNoteInfo, current_beat: float) -> void:
 	speed = Constants.BEAT_DISTANCE * Map.current_info.beats_per_minute * 0.016666666666666667
 	beat = note_info.beat
 	which_saber = note_info.color
-	is_dot = note_info.cut_direction == 8
+	is_dot = note_info.cut_angle >= Constants.DIRECTION8_COMPARE
 	
 	if is_dot:
 		(collision_big.shape as BoxShape3D).size.y = 0.8
 	else:
 		(collision_big.shape as BoxShape3D).size.y = 0.5
-	
-	transform.origin.x = Constants.LANE_DISTANCE * float(note_info.line_index) + Constants.LANE_ZERO_X
-	transform.origin.y = Constants.LANE_DISTANCE * float(note_info.line_layer) + Constants.LAYER_ZERO_Y
+		
+	scale = Vector3(Settings.block_size/100.,Settings.block_size/100.,Settings.block_size/100.)
+	transform.origin.x = Settings.LANE_DISTANCE_X * float(note_info.line_index) + Settings.LANE_ZERO_X
+	transform.origin.y = Constants.LANE_DISTANCE_Y * float(note_info.line_layer) + Constants.LAYER_ZERO_Y
 	transform.origin.z = -(note_info.beat - current_beat) * Constants.BEAT_DISTANCE
 	
-	rotation.z = Constants.CUBE_ROTATIONS[note_info.cut_direction] + deg_to_rad(note_info.angle_offset)
+	add_lane_rotation(note_info.rotation)
 	
-	piece_left.set_color(color)
-	piece_right.set_color(color)
+	rotation.z = note_info.cut_angle
+	
+	piece_left.set_color(color, is_dot)
+	piece_right.set_color(color, is_dot)
 	_mat.set_shader_parameter(&"color", color)
 	_mat.set_shader_parameter(&"is_dot", is_dot)
+	_mat.set_shader_parameter(&"arrows_enabled", Settings.arrows_enabled)
 	# since cube instances get recycled, we gotta reset cubes that were chain
 	# heads in a past life
 	_mat.set_shader_parameter(&"is_chain_head", false)
 	piece_left.set_chain_head(false)
 	piece_right.set_chain_head(false)
+	chain_head = false
 	
 	# separate cube collision layers to allow a diferent collider on right/wrong cuts.
 	# opposing collision layers (ie. right note & left saber) will be placed on the
@@ -107,35 +115,44 @@ func make_chain_head() -> void:
 	_mat.set_shader_parameter(&"is_chain_head", true)
 	piece_left.set_chain_head(true)
 	piece_right.set_chain_head(true)
+	chain_head = true
 
 func on_miss() -> void:
-	Scoreboard.reset_combo()
+	Scoreboard.bad_cut(global_transform.origin+Vector3(0,0,-3.5), lane_rotation, "miss")
 	hide_cube()
 	release()
 
 func set_collision_disabled(value: bool) -> void:
 	collision_big.disabled = value
 	collision_small.disabled = value
-
-func cut(saber_type: int, cut_speed: Vector3, cut_plane: Plane, controller: BeepSaberController) -> void:
-	# compute the angle between the cube orientation and the cut direction
-	var cut_direction_xy := -Vector3(cut_speed.x, cut_speed.y, 0.0).normalized()
-	var base_cut_angle_accuracy := global_transform.basis.y.dot(cut_direction_xy)
-	var cut_distance := cut_plane.distance_to(global_transform.origin)
 	
-	if saber_type == which_saber:
+func set_arc_head() -> void:
+	arc_head = true
+
+func set_arc_tail() -> void:
+	arc_tail = true
+
+func cut(saber: LightSaber, cut_speed: Vector3, cut_plane: Plane, controller: BeepSaberController) -> void:
+	# compute the angle between the cube orientation and the cut direction
+	cut_speed = cut_speed.rotated(Vector3(0,1,0), -rotation.y)
+	var cut_direction_xy := -Vector3(cut_speed.x, cut_speed.y, 0.0).normalized()
+	var base_cut_angle_accuracy := global_transform.basis.orthonormalized().y.dot(cut_direction_xy)
+	var cut_distance := cut_plane.distance_to(global_transform.origin)
+	var distance_scale := 100./Settings.block_size
+	
+	if saber.type == which_saber or Map.one_saber or Settings.handedness != 0:
 		var cut_angle_accuracy := clampf((base_cut_angle_accuracy-0.7)/0.3, 0.0, 1.0)
-		if is_dot: #ignore angle if is a dot
+		if is_dot or not Settings.arrows_enabled: #ignore angle if is a dot
 			cut_angle_accuracy = 1.0
-		var cut_distance_accuracy := clampf((0.1 - absf(cut_distance))/0.1, 0.0, 1.0)
+		var cut_distance_accuracy := clampf((0.1 - absf(cut_distance*distance_scale))/0.1, 0.0, 1.0)
 		var travel_distance_factor := controller.movement_aabb.get_longest_axis_size()
 		travel_distance_factor = clampf((travel_distance_factor-0.5)/0.5, 0.0, 1.0)
 		# allows a bit of save margin where the beat is considered 100% correct
 		var beat_accuracy := clampf((1.0 - absf(global_transform.origin.z)) / 0.5, 0.0, 1.0)
-		Scoreboard.note_cut(transform.origin, beat_accuracy, cut_angle_accuracy, cut_distance_accuracy, travel_distance_factor)
+		Scoreboard.note_cut(saber, transform.origin, lane_rotation, beat_accuracy, cut_angle_accuracy, cut_distance_accuracy, travel_distance_factor, arc_head, arc_tail, chain_head)
 		cutted.emit(true)
 	else:
-		Scoreboard.bad_cut(transform.origin)
+		Scoreboard.bad_cut(transform.origin, lane_rotation, "wrong saber")
 		cutted.emit(false)
 	
 	# reset the movement tracking volume for the next cut
@@ -151,23 +168,25 @@ func cut(saber_type: int, cut_speed: Vector3, cut_plane: Plane, controller: Beep
 # cut the cube by creating two rigid bodies and using a CSGBox to create
 # the cut plane
 func _start_cut_pieces(cutplane: Plane) -> void:
+	piece_left.scale = Vector3(Settings.block_size,Settings.block_size,Settings.block_size)/100.
+	piece_right.scale = Vector3(Settings.block_size,Settings.block_size,Settings.block_size)/100.
 	piece_left.global_transform = global_transform
 	piece_right.global_transform = global_transform
 	
 	# calculate angle and position of the cut
-	var cut_angle_abs := Vector2(cutplane.normal.x, cutplane.normal.y).angle()
-	var cut_dist_from_center := cutplane.distance_to(global_transform.origin)
-	var cut_angle_rel := cut_angle_abs - global_rotation.z
+	#var cut_angle_abs := Vector2(cutplane.normal.x, cutplane.normal.y).angle()
 	
 	_piece_death_count = 0
-	piece_left.start_cut(-cut_dist_from_center, cut_angle_rel + PI)
-	piece_right.start_cut(cut_dist_from_center, cut_angle_rel)
+
+	var p := cutplane # ARP: fix rot global_transform * 
+	piece_left.start_cut_plane(-p.normal, -p.d) # ARP: scale p.d for block size?
+	piece_right.start_cut_plane(p.normal, p.d)
 	
 	# some impulse so the cube half moves
-	var split_vector := cutplane.normal * 2.0
-	piece_left.apply_central_impulse(-split_vector)
-	piece_right.apply_central_impulse(split_vector)
+	var split_vector := p.normal * 2.0
+	piece_left.apply_central_impulse(-split_vector) #piece_left.transform * -split_vector)
+	piece_right.apply_central_impulse(split_vector)#piece_right.transform * split_vector)
 	
-	slice_particles.global_transform.origin = global_transform.origin
-	slice_particles.rotation.z = cut_angle_abs+TAU*0.25
-	slice_particles.fire()
+	#slice_particles.global_transform.origin = global_transform.origin
+	#slice_particles.rotation.z = cut_angle_abs+TAU*0.25
+	#slice_particles.fire()

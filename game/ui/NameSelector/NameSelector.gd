@@ -9,8 +9,6 @@ signal name_selected(name: String)
 func _ready() -> void:
 	clear_names()
 
-# adds a name button to the list
-# names that are added first show up first in list
 func add_name(name: String) -> void:
 	var new_button := _base_button.duplicate() as Button
 	new_button.text = name

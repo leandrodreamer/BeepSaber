@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_back;
+uniform vec3 color;
 uniform float how_full;
 
 void fragment() {
@@ -15,5 +16,5 @@ void fragment() {
 	if (how_full < 0.995 && atan(x,y) + PI > how_full * TAU) {
 		discard;
 	}
-	ALBEDO = vec3(1.0);
+	ALBEDO = color; // vec3(1.0);
 }

@@ -42,7 +42,7 @@ disable_receive_shadows = true
 [sub_resource type="TextMesh" id="TextMesh_toqpu"]
 material = SubResource("StandardMaterial3D_1gu7s")
 text = "x"
-font_size = 4
+font_size = 6
 depth = 0.0
 
 [node name="points_label" type="Node3D"]

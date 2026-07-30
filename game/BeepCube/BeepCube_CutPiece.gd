@@ -22,7 +22,7 @@ func _init(parent: Node3D, mesh_in: Mesh, mat_in: ShaderMaterial, bouncy: bool) 
 	collision_mask = CollisionLayerConstants.Floor_mask
 	gravity_scale = 1
 	if bouncy:
-		# set a phyiscs material for some more bouncy behaviour
+		# set a physics material for some more bouncy behaviour
 		physics_material_override = cube_phys_mat
 	
 	mesh.mesh = mesh_in
@@ -38,20 +38,30 @@ func _init(parent: Node3D, mesh_in: Mesh, mat_in: ShaderMaterial, bouncy: bool) 
 	
 	hide_piece()
 
-func start_cut(dist_from_center, angle) -> void:
+func start_cut_plane(normal: Vector3, dist: float) -> void:
 	# re-enable our process_mode first otherwise it seems like Godot-internals
 	# can behave weirdly (ex. AnimationPlayer won't always play correctly)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
+	var s := Settings.block_size / 100.
+	mesh.scale = Vector3(s,s,s)
 	lifetime = 0.0
 	visible = true
 	angular_velocity = Vector3()
 	linear_velocity = Vector3()
-	mesh.material_override.set_shader_parameter(&"cut_dist_from_center", dist_from_center)
-	mesh.material_override.set_shader_parameter(&"cut_angle", angle)
+	
+	normal = normal.rotated(Vector3(0,0,1), -parent_cube.rotation.z) # ARP: fix rot
+	mesh.material_override.set_shader_parameter(&"cut_plane_normal", normal)
+	if dist > .25:
+		dist = .25 
+	elif dist < -.25:
+		dist = -.25
+	mesh.material_override.set_shader_parameter(&"cut_plane_dist", dist) 
 
-func set_color(new_color: Color) -> void:
+func set_color(new_color: Color, is_dot: bool) -> void:
 	mesh.material_override.set_shader_parameter(&"color", new_color)
+	mesh.material_override.set_shader_parameter(&"is_dot", is_dot)
+	mesh.material_override.set_shader_parameter(&"arrows_enabled", Settings.arrows_enabled)
 	
 func set_chain_head(is_chain_head: bool) -> void:
 	mesh.material_override.set_shader_parameter(&"is_chain_head", is_chain_head)

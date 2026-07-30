@@ -1,8 +1,8 @@
 [gd_scene load_steps=35 format=3 uid="uid://qjvg3reomvyk"]
 
-[ext_resource type="Script" path="res://game/event_driver.gd" id="2"]
+[ext_resource type="Script" uid="uid://4mismrno10gr" path="res://game/event_driver.gd" id="2"]
 [ext_resource type="ArrayMesh" uid="uid://cy814avk383k" path="res://game/data/ring.obj" id="3"]
-[ext_resource type="Texture2D" uid="uid://dyrjirngmo2mx" path="res://game/data/background/bg_base.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://cpifpmidb4s0c" path="res://game/data/background/bg_base.jpg" id="5"]
 [ext_resource type="Texture2D" uid="uid://dni5frh7n4p12" path="res://game/data/background/bg_2.png" id="6"]
 [ext_resource type="Texture2D" uid="uid://djaa4fvy6pao" path="res://game/data/background/bg_0.png" id="7"]
 [ext_resource type="ArrayMesh" uid="uid://ku0r0adowu8p" path="res://game/data/background/endpath.obj" id="8_krd13"]
@@ -58,6 +58,12 @@ void fragment(){
 [sub_resource type="ShaderMaterial" id="5"]
 render_priority = 0
 shader = SubResource("4")
+shader_parameter/bg_base = ExtResource("5")
+shader_parameter/bg_0 = ExtResource("7")
+shader_parameter/bg_1 = ExtResource("10")
+shader_parameter/bg_2 = ExtResource("6")
+shader_parameter/bg_3 = ExtResource("9")
+shader_parameter/bg_4 = ExtResource("10")
 shader_parameter/bg_0_intensity = 0.0
 shader_parameter/bg_1_intensity = 0.0
 shader_parameter/bg_2_intensity = 0.0
@@ -74,12 +80,6 @@ shader_parameter/bg_1_intensity_mult = 0.15
 shader_parameter/bg_2_intensity_mult = 0.25
 shader_parameter/bg_3_intensity_mult = 0.25
 shader_parameter/bg_4_intensity_mult = 0.4
-shader_parameter/bg_base = ExtResource("5")
-shader_parameter/bg_0 = ExtResource("7")
-shader_parameter/bg_1 = ExtResource("10")
-shader_parameter/bg_2 = ExtResource("6")
-shader_parameter/bg_3 = ExtResource("9")
-shader_parameter/bg_4 = ExtResource("10")
 
 [sub_resource type="SphereMesh" id="6"]
 flip_faces = true
@@ -159,7 +159,7 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ghmyd"]
 _data = {
-"laser_anim": SubResource("13")
+&"laser_anim": SubResource("13")
 }
 
 [sub_resource type="StandardMaterial3D" id="14"]
@@ -220,7 +220,7 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x47bd"]
 _data = {
-"laser_anim": SubResource("15")
+&"laser_anim": SubResource("15")
 }
 
 [sub_resource type="Gradient" id="Gradient_0q6si"]
@@ -582,8 +582,8 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_710ni"]
 _data = {
-"in": SubResource("21"),
-"out": SubResource("22")
+&"in": SubResource("21"),
+&"out": SubResource("22")
 }
 
 [node name="event_driver" type="Node3D"]
@@ -809,7 +809,7 @@ mesh = SubResource("10")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
 
 [node name="laser1" type="Node3D" parent="Level/LeftWavingLasers"]
-transform = Transform3D(0.871635, -5.611e-09, -0.490155, -0.490155, -2.14254e-08, -0.871635, -5.611e-09, 1, -2.14254e-08, -12.4292, -1.26002, -11)
+transform = Transform3D(0.988014, -5.23933e-10, -0.154366, -0.154366, -6.74754e-09, -0.988014, -5.23933e-10, 1, -6.74754e-09, -12.4292, -1.26002, -11)
 
 [node name="Bar7" type="MeshInstance3D" parent="Level/LeftWavingLasers/laser1"]
 transform = Transform3D(1, 0, -7.02255e-16, 0, 1, 0, 2.34085e-16, 0, 3, 0, 9.53674e-07, -9)
@@ -818,7 +818,7 @@ material_override = SubResource("12")
 mesh = SubResource("10")
 
 [node name="laser2" type="Node3D" parent="Level/LeftWavingLasers"]
-transform = Transform3D(0.970231, -1.30123e-09, -0.24218, -0.24218, -1.0586e-08, -0.970231, -1.30123e-09, 1, -1.0586e-08, -12.4292, -1.26002, -14)
+transform = Transform3D(0.915241, -3.70492e-09, 0.402906, 0.402906, 1.76116e-08, -0.915241, -3.70492e-09, 1, 1.76116e-08, -12.4292, -1.26002, -14)
 
 [node name="Bar7" type="MeshInstance3D" parent="Level/LeftWavingLasers/laser2"]
 transform = Transform3D(1, 0, -7.02255e-16, 0, 1, 0, 2.34085e-16, 0, 3, 0, 9.53674e-07, -9)
@@ -827,7 +827,7 @@ material_override = SubResource("12")
 mesh = SubResource("10")
 
 [node name="laser3" type="Node3D" parent="Level/LeftWavingLasers"]
-transform = Transform3D(0.97756, -9.8089e-10, -0.210658, -0.210658, -9.20814e-09, -0.97756, -9.8089e-10, 1, -9.20814e-09, -12.4292, -1.26002, -17)
+transform = Transform3D(0.880312, -5.23174e-09, -0.474396, -0.474396, -2.07365e-08, -0.880312, -5.23174e-09, 1, -2.07365e-08, -12.4292, -1.26002, -17)
 
 [node name="Bar7" type="MeshInstance3D" parent="Level/LeftWavingLasers/laser3"]
 transform = Transform3D(1, 0, -7.02255e-16, 0, 1, 0, 2.34085e-16, 0, 3, 0, 0, -9)
@@ -836,7 +836,7 @@ material_override = SubResource("12")
 mesh = SubResource("10")
 
 [node name="laser4" type="Node3D" parent="Level/LeftWavingLasers"]
-transform = Transform3D(0.998162, -8.03233e-11, -0.0605953, -0.0605953, -2.6487e-09, -0.998162, -8.03233e-11, 1, -2.6487e-09, -12.4292, -1.26002, -20)
+transform = Transform3D(0.866025, -5.85622e-09, -0.5, -0.5, -2.18557e-08, -0.866025, -5.85621e-09, 1, -2.18557e-08, -12.4292, -1.26002, -20)
 
 [node name="Bar7" type="MeshInstance3D" parent="Level/LeftWavingLasers/laser4"]
 transform = Transform3D(1, 0, -7.02255e-16, 0, 1, 0, 2.34085e-16, 0, 3, 0, 0, -9)
@@ -846,7 +846,7 @@ mesh = SubResource("10")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Level/LeftWavingLasers"]
 libraries = {
-"": SubResource("AnimationLibrary_ghmyd")
+&"": SubResource("AnimationLibrary_ghmyd")
 }
 autoplay = "laser_anim"
 
@@ -891,7 +891,7 @@ mesh = SubResource("10")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Level/RightWavingLasers"]
 libraries = {
-"": SubResource("AnimationLibrary_x47bd")
+&"": SubResource("AnimationLibrary_x47bd")
 }
 autoplay = "laser_anim"
 
@@ -1041,7 +1041,7 @@ mesh = ExtResource("3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Level/rings"]
 libraries = {
-"": SubResource("AnimationLibrary_710ni")
+&"": SubResource("AnimationLibrary_710ni")
 }
 playback_default_blend_time = 0.2
 

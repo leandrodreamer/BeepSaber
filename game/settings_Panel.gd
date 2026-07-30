@@ -9,12 +9,15 @@ signal apply()
 @onready var saber_tail_control := $ScrollContainer/VBox/saber_tail as CheckButton
 @onready var saber_thickness := $ScrollContainer/VBox/SaberThicknessRow/saber_thickness as HSlider
 @onready var cut_blocks := $ScrollContainer/VBox/cut_blocks as CheckButton
-@onready var d_background := $ScrollContainer/VBox/d_background as CheckButton
 @onready var left_saber_col := $ScrollContainer/VBox/SaberColorsRow/left_saber_col as ColorPickerButton
 @onready var right_saber_col := $ScrollContainer/VBox/SaberColorsRow/right_saber_col as ColorPickerButton
 @onready var show_debug_control := $ScrollContainer/VBox/show_debug as CheckButton
+@onready var mixed_reality_control := $ScrollContainer/VBox/mixed_reality as CheckButton
+@onready var explain_control := $ScrollContainer/VBox/explain as CheckButton
+@onready var left_handed_control := $ScrollContainer/VBox/left_handed as CheckButton
+@onready var not_music_dl_control := $ScrollContainer/VBox/not_music_dl as CheckButton
+@onready var swing_scoring_control := $ScrollContainer/VBox/swing_scoring as CheckButton
 @onready var show_collisions := $ScrollContainer/VBox/show_collisions as CheckButton
-@onready var bombs_enabled_control := $ScrollContainer/VBox/bombs_enabled as CheckButton
 @onready var ui_volume_slider := $ScrollContainer/VBox/UI_VolumeRow/ui_volume_slider as HSlider
 @onready var disable_map_color_control := $ScrollContainer/VBox/disable_map_color as CheckButton
 @onready var left_saber_posx_control := $ScrollContainer/VBox/left_saber_offset/posx as SpinBox
@@ -32,22 +35,69 @@ signal apply()
 @onready var player_height_offset_control := $ScrollContainer/VBox/player_height_offset/pos as SpinBox
 @onready var audio_master_control := $ScrollContainer/VBox/audio/master/master_slider as HSlider
 @onready var audio_music_control := $ScrollContainer/VBox/audio/music/music_slider as HSlider
+@onready var audio_music_preview_control := $ScrollContainer/VBox/audio/music_preview/music_preview_slider as HSlider
 @onready var audio_sfx_control := $ScrollContainer/VBox/audio/sfx/sfx_slider as HSlider
 @onready var spectator_view_control := $ScrollContainer/VBox/spectator_view as CheckButton
 @onready var spectator_hud_control := $ScrollContainer/VBox/spectator_hud as CheckButton
+@onready var background_mode_control := $ScrollContainer/VBox/background_mode_grid/background_mode as OptionButton
+@onready var background_texture_control := $ScrollContainer/VBox/background_texture_grid/background_texture as OptionButton
 
 var _play_ui_sound_demo := false
+var left_saber_col_state := false
+var right_saber_col_state := false
+
+@export var main_menu_ref : MainMenu
 
 func _ready() -> void:
 	UI_AudioEngine.attach_children(self)
 	
+	if OS.get_name() in ["Android", "Web"]:
+		spectator_hud_control.hide()
+		spectator_view_control.hide()
+
+	for i in len(Settings.BACKGROUND_MODES):
+		background_mode_control.add_item(Settings.BACKGROUND_MODES[i][1])
+		if Settings.background == Settings.BACKGROUND_MODES[i][0]:
+			background_mode_control.selected = i
+	background_mode_control.connect("item_selected", _on_background_mode_selected)
+	
+	_update_backgrounds()
+
 	set_controls_from_settings()
 	_play_ui_sound_demo = true
-	
+	for picker in [left_saber_col.get_picker(),right_saber_col.get_picker()]:
+		picker.sampler_visible = false
+		picker.presets_visible = true
+		picker.picker_shape = ColorPicker.SHAPE_NONE
+		picker.add_recent_preset(Color("ff1a1a"))
+		picker.add_recent_preset(Color("1a1aff"))
+			
 	if OS.get_name() == &"Web":
 		# way too heavy for webxr
 		$ScrollContainer/VBox/glare.hide()
-
+		
+func _update_backgrounds() -> void:
+	var selected := 0
+	background_texture_control.clear()
+	for i in len(Settings.BACKGROUND_TEXTURES):
+		background_texture_control.add_item(Settings.BACKGROUND_TEXTURES[i][1])
+		if Settings.background_texture == Settings.BACKGROUND_TEXTURES[i][0]:
+			selected = i
+	var dir := DirAccess.open(Constants.APPDATA_PATH + "Backgrounds")
+	var i := len(Settings.BACKGROUND_TEXTURES)
+	if dir:
+		dir.list_dir_begin()
+		var name := dir.get_next()
+		while name != "":
+			if not dir.current_is_dir():
+				background_texture_control.add_item(name)
+				if Settings.background_texture == name:
+					selected = i
+				i += 1
+			name = dir.get_next()
+	background_texture_control.selected = selected
+	background_texture_control.connect("item_selected", _on_background_texture_selected)
+	
 func set_controls_from_settings() -> void:
 	saber_control.clear()
 	for s in Settings.SABER_VISUALS:
@@ -64,10 +114,13 @@ func set_controls_from_settings() -> void:
 	right_saber_col.color = Settings.color_right
 	saber_tail_control.button_pressed = Settings.saber_tail
 	glare_control.button_pressed = Settings.glare
-	d_background.button_pressed = Settings.events
 	saber_control.select(Settings.saber_visual)
 	show_debug_control.button_pressed = Settings.show_debug_info
-	bombs_enabled_control.button_pressed = Settings.bombs_enabled
+	mixed_reality_control.button_pressed = Settings.mixed_reality
+	explain_control.button_pressed = Settings.explain
+	left_handed_control.button_pressed = Settings.left_handed
+	not_music_dl_control.button_pressed = Settings.not_music_dl
+	swing_scoring_control.button_pressed = Settings.swing_scoring
 	ui_volume_slider.value = Settings.ui_volume
 	disable_map_color_control.button_pressed = Settings.disable_map_color
 	left_saber_posx_control.value = Settings.left_saber_offset_pos.x
@@ -85,6 +138,7 @@ func set_controls_from_settings() -> void:
 	player_height_offset_control.value = Settings.player_height_offset
 	audio_master_control.value = Settings.audio_master
 	audio_music_control.value = Settings.audio_music
+	audio_music_preview_control.value = Settings.audio_music_preview
 	audio_sfx_control.value = Settings.audio_sfx
 	spectator_view_control.button_pressed = Settings.spectator_view
 	spectator_hud_control.button_pressed = Settings.spectator_hud
@@ -112,17 +166,21 @@ func _on_saber_tail_toggled(button_pressed: bool) -> void:
 func _on_glare_toggled(button_pressed: bool) -> void:
 	Settings.glare = button_pressed
 
-func _on_d_background_toggled(button_pressed: bool) -> void:
-	Settings.events = button_pressed
-
 func _on_saber_item_selected(index: int) -> void:
 	Settings.saber_visual = index
 
 func _on_show_debug_toggled(button_pressed: bool) -> void:
 	Settings.show_debug_info = button_pressed
 
-func _on_bombs_enabled_toggled(button_pressed: bool) -> void:
-	Settings.bombs_enabled = button_pressed
+func _on_mixed_reality_toggled(button_pressed: bool) -> void:
+	Settings.mixed_reality = button_pressed
+	MixedReality.set_mixed_reality(Settings.mixed_reality)
+
+func _on_explain_toggled(button_pressed: bool) -> void:
+	Settings.explain = button_pressed
+
+func _on_swing_scoring_toggled(button_pressed: bool) -> void:
+	Settings.swing_scoring = button_pressed
 
 func _on_ui_volume_slider_value_changed(value: float) -> void:
 	UI_AudioEngine.set_volume(linear_to_db(float(value)/10.0))
@@ -172,7 +230,7 @@ func _on_player_height_offset_changed(value: float) -> void:
 
 func _on_disable_map_color_toggled(toggled_on: bool) -> void:
 	Settings.disable_map_color = toggled_on
-
+	
 func _force_update_show_coll_shapes(node: Node) -> void:
 	# toggle enable to make engine show collision shapes
 	if node is CollisionShape3D:
@@ -197,13 +255,17 @@ func _on_apply_pressed() -> void:
 	apply.emit()
 	left_saber_col.get_popup().hide()
 	right_saber_col.get_popup().hide()
-
+	left_saber_col_state = false
+	right_saber_col_state = false
 
 func _on_master_slider_value_changed(value: float) -> void:
 	Settings.audio_master = value
 
 func _on_music_slider_value_changed(value: float) -> void:
 	Settings.audio_music = value
+
+func _on_music_preview_slider_value_changed(value: float) -> void:
+	Settings.audio_music_preview = value
 
 func _on_sfx_slider_value_changed(value: float) -> void:
 	Settings.audio_sfx = value
@@ -227,3 +289,40 @@ func _on_recenter_button_up() -> void:
 	recenter_button.text = "Recenter"
 	recenter_button.disabled = false
 	beepsaber_game.recenter()
+
+func _on_left_saber_col_pressed() -> void:
+	if left_saber_col_state:
+		left_saber_col.get_popup().hide()
+	left_saber_col_state = not left_saber_col_state
+
+func _on_right_saber_col_pressed() -> void:
+	if right_saber_col_state:
+		right_saber_col.get_popup().hide()
+	right_saber_col_state = not right_saber_col_state
+
+func _on_not_music_dl_toggled(button_pressed: bool) -> void:
+	Settings.not_music_dl = button_pressed
+
+func _on_simple_toggled(button_pressed: bool) -> void:
+	if button_pressed:
+		Settings.background = "simple"
+
+func _on_dynamic_toggled(button_pressed: bool) -> void:
+	if button_pressed:
+		Settings.background = "dynamic"
+
+func _on_static_toggled(button_pressed: bool) -> void:
+	if button_pressed:
+		Settings.background = "static"
+
+func _on_background_texture_selected(item: int) -> void:
+	if item < len(Settings.BACKGROUND_TEXTURES):
+		Settings.background_texture = Settings.BACKGROUND_TEXTURES[item][0]
+	else:
+		Settings.background_texture = background_texture_control.get_item_text(item)
+
+func _on_background_mode_selected(item: int) -> void:
+	Settings.background = Settings.BACKGROUND_MODES[item][0]
+
+func _on_left_handed_toggled(value: bool) -> void:
+	Settings.left_handed = value

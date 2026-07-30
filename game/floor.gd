@@ -14,25 +14,31 @@ var C_RIGHT := Color()
 @onready var l_sprite := $SubViewport/ColorRect/burn_l/sprite as Panel
 @onready var r_sprite := $SubViewport/ColorRect/burn_r/sprite as Panel
 @onready var timer_clear := $TimerClear as Timer
+const mixed_reality_burn_alpha := 0.3
 
 var is_disabled := false
 
 func _ready() -> void:
 	var material := ($Node3D/cutFloor as MeshInstance3D).material_override as StandardMaterial3D
+	sub_viewport.transparent_bg = Settings.mixed_reality
 	material.albedo_texture = sub_viewport.get_texture()
 	material.emission_texture = sub_viewport.get_texture()
 	
 	if OS.get_name() == &"Web":
 		sub_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 		is_disabled = true
-
+		
 func update_left_color(color: Color) -> void:
 	C_LEFT = color
 	burn_l.modulate = color*6
+	if Settings.mixed_reality:
+		burn_l.modulate.a = mixed_reality_burn_alpha
 
 func update_right_color(color: Color) -> void:
 	C_RIGHT = color
 	burn_r.modulate = color*6
+	if Settings.mixed_reality:
+		burn_r.modulate.a = mixed_reality_burn_alpha
 
 var left_is_out := false
 var right_is_out := false
@@ -43,9 +49,11 @@ func burn_mark(pos:=Vector3(0,0,-50),type:=0) -> void:
 		(pos.x+1)*256,
 		pos.z*256
 	)
+
 	var burn_mark_sprite: Node2D
 	var burn_mark_sprite_long: Panel
 	var dist: float
+
 	if type == 0:
 		burn_mark_sprite = burn_l
 		burn_mark_sprite_long = l_sprite

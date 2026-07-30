@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cl1dig23jiq45"]
 
-[ext_resource type="Script" path="res://game/Arc/Arc.gd" id="1_5s55r"]
+[ext_resource type="Script" uid="uid://cmaah614iq1a7" path="res://game/Arc/Arc.gd" id="1_5s55r"]
 [ext_resource type="Material" uid="uid://cripndlpd8xp1" path="res://game/Arc/Arc.material" id="2_6ceex"]
 
 [sub_resource type="Curve3D" id="Curve3D_n4apf"]
@@ -28,6 +28,7 @@ path_interval_type = 0
 path_interval = 0.13
 path_simplify_angle = 0.0
 path_rotation = 2
+path_rotation_accurate = false
 path_local = true
 path_continuous_u = true
 path_u_distance = 1.0
